@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'antonio';
+  src: url('./assets/fonts/Antonio.ttf') format('truetype');
+}
+
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "antonio", sans-serif;
+  font-size: 16px;
+}
