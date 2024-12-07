@@ -11,14 +11,9 @@
   font-size: 16px;
 }
 
-.texture::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('https://media.istockphoto.com/id/1350825463/photo/seamless-tileable-vintage-parchment-paper-texture-background.jpg?b=1&s=612x612&w=0&k=20&c=8oyv71a9RknW4PYDw-mYtPOffXNFOx6km7gEkr9Og1w=');
-  opacity: 0.23;
-  z-index: -1;
+.texture {
+  background: 
+    url('./src/assets/images/noise.svg');
+  z-index: 1000;
+  opacity: 0.4;
 }

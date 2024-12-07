@@ -119,7 +119,7 @@ const ShopPage = () => {
   return (
     <>
       <h2 className='text-center text-3xl'>SHOP </h2>
-      <div className='w-full overflow-x-auto'>
+      <div className='w-full overflow-x-auto flex justify-start lg:justify-center'>
         <div className='flex justify-center py-4 h-15 w-max'>
           {filters.map((filter) => (
             <PaperButton key={filter} 
@@ -135,7 +135,7 @@ const ShopPage = () => {
         </div>
       </div>
 
-      <div className='grid grid-cols-1 md:grid-cols-4 gap-4 p-4'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4'>
         {data.map((item) => (
           <Card key={item.id} item={item} />
         ))}
