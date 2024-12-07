@@ -1,9 +1,14 @@
+import { useEffect, useState } from 'react'
+
 import Card from '../../components/shop/Card'
+import { useLocation } from 'react-router-dom'
+
+import PaperButton from '../../components/utilities/PaperButton'
 
 const data = [
   {
     id: 1,
-    title: 'Product 1',
+    title: 'Product 1 lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptate!',
     price: 100,
     image: 'https://picsum.photos/id/91/300/',
     category: ['mens', 'shirt']
@@ -20,14 +25,14 @@ const data = [
     title: 'Product 3',
     price: 300,
     image: 'https://picsum.photos/id/91/300/',
-    category: ['hoodie', 'bisexual']
+    category: ['hoodie', 'unisex']
   },
   {
     id: 4,
     title: 'Product 4',
     price: 400,
     image: 'https://picsum.photos/id/91/300/',
-    category: ['hats', 'bisexual']
+    category: ['hats', 'unisex']
   },
   {
     id: 5,
@@ -48,14 +53,14 @@ const data = [
     title: 'Product 3',
     price: 300,
     image: 'https://picsum.photos/id/91/300/',
-    category: ['hoodie', 'bisexual']
+    category: ['hoodie', 'unisex']
   },
   {
     id: 8,
     title: 'Product 4',
     price: 400,
     image: 'https://picsum.photos/id/91/300/',
-    category: ['hats', 'bisexual']
+    category: ['hats', 'unisex']
   },
   {
     id: 9,
@@ -85,14 +90,51 @@ const data = [
     image: 'https://picsum.photos/id/91/300/',
     category: ['womens', 'kurti']
   },
-
 ]
+
+const filters = ['mens', 'womens', 'shirt', 'trousers', 'hoodie', 'unisex', 'hats', 'kurti']
 
 const ShopPage = () => {
 
+  const url = new URL(window.location.href)
+
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search);
+  const [activeFilters, setActiveFilters] = useState(['trousers'])
+
+  const handleFilter = (e) => {
+    const value = e.target.innerText
+    if (activeFilters.includes(value)) {
+      setActiveFilters(activeFilters.filter((filter) => filter !== value))
+    } else {
+      setActiveFilters([...activeFilters, value])
+    }
+  }
+
+  useEffect(() => {
+    console.log(activeFilters.join(','))
+    url.searchParams.set('filters', activeFilters.join(','))
+  }, [activeFilters])
+
   return (
     <>
-      <h2 className='text-center'>SHOP </h2>
+      <h2 className='text-center text-3xl'>SHOP </h2>
+      <div className='w-full overflow-x-auto'>
+        <div className='flex justify-center py-4 h-15 w-max'>
+          {filters.map((filter) => (
+            <PaperButton key={filter} 
+              onClick={handleFilter}
+              value={filter}
+              className={`
+                ${activeFilters.includes(filter.toUpperCase()) ? 'bg-primary dark:bg-secondary text-secondary dark:text-primary' : 'bg-secondary dark:bg-primary text-primary dark:text-secondary'} 
+                uppercase w-max px-4 border-primary dark:border-secondary mx-2`}
+            >
+              {filter}
+            </PaperButton>
+          ))}
+        </div>
+      </div>
+
       <div className='grid grid-cols-1 md:grid-cols-4 gap-4 p-4'>
         {data.map((item) => (
           <Card key={item.id} item={item} />
@@ -101,6 +143,6 @@ const ShopPage = () => {
     </>
 
   )
-}   
+} 
 
 export default ShopPage

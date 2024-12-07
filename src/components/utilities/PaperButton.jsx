@@ -24,8 +24,6 @@ const PaperButton = ({ value, className, onClick }) => {
 	  onClick={onClick}
     >
       <span className='z-10'>{value}</span>{}
-    
-    
     </button>
   )
 }

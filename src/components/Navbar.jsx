@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { BrandIcon } from '../assets/svg'
 
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai'
 
 import { motion, AnimatePresence } from 'framer-motion'
+
+import PaperButton from './utilities/PaperButton'
 
 const navLinks = [
     {
@@ -25,6 +27,7 @@ const navLinks = [
 const Navbar = () => {
         const [nav, setNav] = useState(false)
         const location = useLocation()
+        const navigate = useNavigate()
 
         const handleNav = () => {
                 setNav(!nav)
@@ -42,12 +45,16 @@ const Navbar = () => {
                         <nav className='hidden md:flex space-x-6 items-center'>
                                 {navLinks.map((link, index) => (
                                         <li key={index} className='decoraion-none list-none hover:underline transition-all duration-500'>
-                                                <Link to={link.to} className='text-primary dark:text-secondary text-center px-2 py-1'>
-                                                        {link.title}
-                                                </Link>
+                                            <Link to={link.to} className='text-primary dark:text-secondary text-center px-2 py-1 uppercase'>
+                                                {link.title}
+                                            </Link>
                                         </li>
                                 ))}
-                                <Link to="auth/login" className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary text-center hover:opacity-85 relative'>Login</Link>
+                                <PaperButton 
+                                    value='LOGIN'
+                                    onClick={() => navigate('/auth/login')}
+                                    className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary'
+                                />
                         </nav>
 
                         <motion.div 
@@ -63,17 +70,21 @@ const Navbar = () => {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: nav ? 1 : 0, x: nav ? 0 : -20 }}
                                         exit={{ opacity: 0, x: -20 }}
-                                        className={`absolute top-0 left-0 h-full bg-white shadow-md w-[70%] md:hidden ${nav ? 'block' : 'hidden'}`}
+                                        className={`z-50 absolute top-0 left-0 h-full bg-white shadow-md w-[70%] md:hidden ${nav ? 'block' : 'hidden'}`}
                                 >
                                         <ul className='flex flex-col items-center space-y-4 py-6'>
                                                 {navLinks.map((link, index) => (
                                                         <li key={index} className='decoraion-none list-none hover:underline transition-all duration-500'>
-                                                                <Link to={link.to} className='text-primary text-center px-2 py-1'>
+                                                                <Link to={link.to} className='text-primary text-center px-2 py-1 uppercase'>
                                                                         {link.title}
                                                                 </Link>
                                                         </li>
                                                 ))}
-                                                <Link to="auth/login" className='bg-primary px-2 py-1 text-secondary text-center hover:opacity-85'>Login</Link>
+                                                <PaperButton 
+                                                    value='LOGIN'
+                                                    onClick={() => navigate('/auth/login')}
+                                                    className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary'
+                                                />
                                         </ul>
                                 </motion.div>
                         )}</AnimatePresence>
