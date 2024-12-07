@@ -3,7 +3,6 @@
   src: url('./assets/fonts/Antonio.ttf') format('truetype');
 }
 
-
 *{
   margin: 0;
   padding: 0;
@@ -19,7 +18,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('https://img.freepik.com/free-photo/whitish-gray-textured-wallpaper-pattern_1194-6769.jpg?t=st=1733550825~exp=1733554425~hmac=3c514325a2380dc74e59c877f0639fcc27fee7025dacf3c1d0a71b41a8e3100e&w=900');
-  opacity: 0.1;
+  background: url('https://media.istockphoto.com/id/1350825463/photo/seamless-tileable-vintage-parchment-paper-texture-background.jpg?b=1&s=612x612&w=0&k=20&c=8oyv71a9RknW4PYDw-mYtPOffXNFOx6km7gEkr9Og1w=');
+  opacity: 0.23;
   z-index: -1;
 }

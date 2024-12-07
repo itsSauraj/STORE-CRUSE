@@ -47,7 +47,7 @@ const Navbar = () => {
                                                 </Link>
                                         </li>
                                 ))}
-                                <Link to="auth/login" className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary text-center hover:opacity-85'>Login</Link>
+                                <Link to="auth/login" className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary text-center hover:opacity-85 relative'>Login</Link>
                         </nav>
 
                         <motion.div 

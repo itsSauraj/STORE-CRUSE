@@ -10,7 +10,7 @@ const ThemeToggle = () => {
     };
 
     return (
-        <div className='fixed right-10 bottom-10'>
+        <div className='fixed right-10 bottom-10 z-50 border-2 rounded-full border-secondary dark:border-primary'>
             <label className="relative inline-block w-[40px] h-[24px]">
                 <input 
                     type="checkbox" 

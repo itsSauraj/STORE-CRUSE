@@ -53,33 +53,10 @@ const BrowserRouter = createBrowserRouter([
 
 
 
-// function App() {
-//   return (
-//     <AnimatePresence mode="wait">
-//       <RouterProvider router={BrowserRouter} />
-//     </AnimatePresence>
-//   )
-// }
-
-import { Route, Routes, useLocation } from 'react-router-dom'
-
 function App() {
-
-  const location = useLocation()
-
   return (
     <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Default />}>
-          <Route index element={<HomePage />} />
-          <Route path="shop" element={<ShopPage />} />
-          <Route path="about" element={<AboutPage />} />
-          <Route path="help" element={<HelpPage />} />
-        </Route>
-        <Route path="auth" element={<Auth />}>
-          <Route path="login" element={<LoginPage />} />
-        </Route>
-      </Routes>
+      <RouterProvider router={BrowserRouter} />
     </AnimatePresence>
   )
 }
