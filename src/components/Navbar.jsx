@@ -7,8 +7,6 @@ import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai'
 
 import { motion, AnimatePresence } from 'framer-motion'
 
-import ThemeToggle from './ThemeToggle'
-
 const navLinks = [
     {
         title: 'Shop',
