@@ -20,7 +20,7 @@ const Auth = () => {
 	}, [location])
 
 	return (
-		<>
+		<div className='flex flex-col h-[100svh]'>
 			<ThemeToggle />
 			<Navbar />
 			{reload ? (
@@ -28,7 +28,7 @@ const Auth = () => {
 			) : (
 				<Outlet />
 			)}
-		</>
+		</div>
 
 	)
 }
