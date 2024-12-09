@@ -1,7 +1,14 @@
+
+
+
 const LoginPage = () => {
-  return (
-    <div>Login</div>
-  )
+	return (
+		<div className="flex justify-center items-center">
+			<form>
+
+			</form>
+		</div>
+	)
 }
 
 export default LoginPage

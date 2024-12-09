@@ -9,27 +9,27 @@ import Transition from '../components/Transition'
 
 const Default = () => {
 
-  const location = useLocation()
-  const [reload, setReload] = useState(false)
-  
-  useEffect(() => {
-    setReload(true)
-    setTimeout(() => {
-      setReload(false)
-    }, 1000)
-  }, [location])
-  
-  return (
-    <>
-        <ThemeToggle />
-        <Navbar />
-          { reload ? (
-            <Transition component={<Outlet />} /> 
-          ) : (
-            <Outlet />
-          )}
-    </>
-  )
+	const location = useLocation()
+	const [reload, setReload] = useState(false)
+
+	useEffect(() => {
+		setReload(true)
+		setTimeout(() => {
+			setReload(false)
+		}, 1000)
+	}, [location])
+
+	return (
+		<>
+			<ThemeToggle />
+			<Navbar />
+			{reload ? (
+				<Transition component={<Outlet />} />
+			) : (
+				<Outlet />
+			)}
+		</>
+	)
 }
 
 export default Default

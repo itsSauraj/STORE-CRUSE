@@ -4,6 +4,6 @@ import BrandIcon from "./BrandIcon";
 
 
 export {
-    BagIcon,
-    BrandIcon
+	BagIcon,
+	BrandIcon
 }

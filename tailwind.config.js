@@ -10,7 +10,9 @@ export default {
       colors: {
         'paper': '#F0EDE4',
         'secondary': '#DAD1C4',
+        'color-secondary': '#DAD1C4',
         'primary': '#2e2d2c',
+        'color-primary': '#2e2d2c',
         'danger': '#e3342f',
 
 
