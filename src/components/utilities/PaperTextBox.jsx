@@ -5,13 +5,14 @@ import EyeIcon from './svg_icons/EyeIcon'
 import EveStashIcon from './svg_icons/EveStashIcon'
 
 const PaperTextBox = ({ 
+	required=false,
+	type="text", 
 	value="", 
 	onChange, 
 	containerClassName,
 	labelClassName,
 	inputClassName,
 	eyeClassName,
-	type="text", 
 	label, 
 	id, 
 	name, 
@@ -36,6 +37,7 @@ const PaperTextBox = ({
 				`}>{label}</label>}
 				<input
 					id={id}
+					required={required}
 					type = {( type=='password' ) ? showPassword ? 'text' : type : type}
 					value={value}
 					name={name}
@@ -103,4 +105,5 @@ PaperTextBox.propTypes = {
 	name: PropTypes.string,
 	placeholder: PropTypes.string,
 	status: PropTypes.object,
+	required: PropTypes.bool
 }

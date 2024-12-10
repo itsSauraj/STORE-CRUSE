@@ -9,8 +9,11 @@ export default {
 				"color-secondary": "#DAD1C4",
 				"primary": "#2e2d2c",
 				"color-primary": "#2e2d2c",
+
 				"error": "#e3342f",
 				"warn": "#f6993f",
+				"success": "#38c172",
+				"info": "#3490dc",
 
 				// SVG Fills
 				"fill-default": "#3a3a3a",

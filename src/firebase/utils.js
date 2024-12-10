@@ -84,7 +84,7 @@ const CreateCustomUser = async (formData) => {
 
 		return user;
 	} catch (error) {
-		console.log("Error creating user", error.message);
+		return { error: error };
 	}
 }
 

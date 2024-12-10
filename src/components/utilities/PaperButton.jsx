@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const PaperButton = ({ value, className, onClick }) => {
+const PaperButton = ({ value, className, onClick, type='button' }) => {
 	return (
 		<button
+			type={type}
 			className={`border-[1px] w-[50%]
 			hover:bg-primary dark:hover:bg-secondary
 			dark:hover:border-primary hover:border-secondary
@@ -35,5 +36,6 @@ PaperButton.propTypes = {
 	value: PropTypes.string.isRequired,
 	className: PropTypes.string,
 	onClick: PropTypes.func,
+	type: PropTypes.string
 }
 
