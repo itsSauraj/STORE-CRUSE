@@ -5,7 +5,7 @@ const PaperButton = ({ value, className, onClick }) => {
 	return (
 		<button
 			className={`border-[1px] w-[50%]
-			hover:bg-primary  dark:hover:bg-secondary
+			hover:bg-primary dark:hover:bg-secondary
 			dark:hover:border-primary hover:border-secondary
 			hover:text-secondary dark:hover:text-primary
 			transition-all duration-300 ease-in delay-100
