@@ -17,6 +17,10 @@ import {
 	doc,
 	setDoc,
 	getDoc,
+	collection,
+	query,
+	where,
+	getDocs,
 } from "firebase/firestore";
 
 
@@ -58,12 +62,14 @@ const createUserProfileDocument = async (userAuth, additionalData) => {
 		const createdAt = new Date();
 		let displayName = userAuth.displayName || additionalData.displayName;
 		let email = userAuth.email || additionalData.email;
+		let passwordSet = additionalData && (additionalData.password1) ? true : false;
 
 		try {
 			await setDoc(userRef, {
 				displayName,
 				email,
 				createdAt,
+				passwordSet,
 			});
 		} catch (error) {
 			console.log("Error creating user", error.message);
@@ -85,6 +91,18 @@ const CreateCustomUser = async (formData) => {
 	}
 }
 
+const chechIfUserPasswordSet = async (userEmail) => {
+
+	const userCollectionInstance = collection(db, "users");
+	const userQuery = query(userCollectionInstance, where("email", "==", userEmail));
+
+	const snapShot = await getDocs(userQuery);
+	const users = snapShot.docs.map((doc) => doc.data());
+
+	return users[0].passwordSet;
+
+}
+
 const LogOutUser = () => {
 	return signOut(auth);
 }
@@ -97,5 +115,6 @@ export {
 	LogOutUser,
 	signInWithEmailPassword,
 	createUserProfileDocument,
-	CreateCustomUser
+	CreateCustomUser,
+	chechIfUserPasswordSet,
 }

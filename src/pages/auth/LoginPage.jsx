@@ -3,7 +3,12 @@ import { useState, useContext } from 'react'
 import PaperTextBox from '../../components/utilities/PaperTextBox'
 import PaperButton from '../../components/utilities/PaperButton'
 
-import { signInWithGooglePopup, createUserProfileDocument, signInWithEmailPassword } from '../../firebase/utils'
+import { 
+	signInWithGooglePopup, 
+	createUserProfileDocument, 
+	signInWithEmailPassword,
+	chechIfUserPasswordSet,
+} from '../../firebase/utils'
 import { Link } from 'react-router-dom'
 
 import { UserContext } from '../../context/UserContext'
@@ -29,6 +34,7 @@ const LoginPage = () => {
 	const handelSignInWithGoogle = async () => {
 		try {
 			const { user } = await signInWithGooglePopup()
+			await createUserProfileDocument(user)
 			setCurrentUser(user)
 		} catch (error) {
 			setNotification({
@@ -50,30 +56,38 @@ const LoginPage = () => {
 			setCurrentUser(user)
 
 		} catch (error) {
-			if (error.code === 'auth/user-not-found') {
-				setNotification({
-					message: 'Email not found',
-					status: 'error'
-				})
-			} else if (error.code === 'auth/invalid-email' || 
-					error.code === 'auth/wrong-password' || 
-					error.code === 'auth/user-disabled' || 
-					error.code === 'auth/invalid-credential'
-			) {
-				setNotification({
-					message: 'Invalid Credentials',
-					status: 'error'
-				})
-			} else if(error.code === 'auth/too-many-requests') {
-				setNotification({
-					message: 'Too many requests, Please try again later',
-					status: 'error'
-				})
-			} else if (error.code === 'auth/missing-password') {
+			console.log(!chechIfUserPasswordSet(loginFormData.email))
+			if (!chechIfUserPasswordSet(loginFormData.email)){
 				setNotification({
 					message: 'Please enter a password',
-					status: 'error'
+					status: 'warning'
 				})
+			} else {
+				if (error.code === 'auth/user-not-found') {
+					setNotification({
+						message: 'Email not found',
+						status: 'error'
+					})
+				} else if (error.code === 'auth/invalid-email' || 
+						error.code === 'auth/wrong-password' || 
+						error.code === 'auth/user-disabled' || 
+						error.code === 'auth/invalid-credential'
+				) {
+					setNotification({
+						message: 'Invalid Credentials',
+						status: 'error'
+					})
+				} else if(error.code === 'auth/too-many-requests') {
+					setNotification({
+						message: 'Too many requests, Please try again later',
+						status: 'error'
+					})
+				} else if (error.code === 'auth/missing-password') {
+					setNotification({
+						message: 'Please enter a password',
+						status: 'error'
+					})
+				}
 			}
 		}
 
