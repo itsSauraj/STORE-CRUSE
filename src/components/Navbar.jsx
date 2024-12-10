@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { BrandIcon } from '../assets/svg'
@@ -8,6 +8,10 @@ import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai'
 import { motion, AnimatePresence } from 'framer-motion'
 
 import PaperButton from './utilities/PaperButton'
+
+import { UserContext } from '../context/UserContext'
+import { LogOutUser } from '../firebase/utils'
+// import { }
 
 const navLinks = [
 	{
@@ -25,6 +29,9 @@ const navLinks = [
 ]
 
 const Navbar = () => {
+
+	const { currentUser, setCurrentUser } = useContext(UserContext)
+
 	const [nav, setNav] = useState(false)
 	const location = useLocation()
 	const navigate = useNavigate()
@@ -36,6 +43,11 @@ const Navbar = () => {
 	useEffect(() => {
 		setNav(false)
 	}, [location])
+
+	const handleLogout = async () => {
+		setCurrentUser(null)
+		await LogOutUser()
+	}
 
 	return (
 		<header className='flex px-6 py-3 items-center justify-between'>
@@ -50,11 +62,19 @@ const Navbar = () => {
 						</Link>
 					</li>
 				))}
-				<PaperButton
-					value='LOGIN'
-					onClick={() => navigate('/auth/login')}
-					className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary'
-				/>
+				{!currentUser ? (
+					<PaperButton
+						value='LOGIN'
+						onClick={() => navigate('/auth/login')}
+						className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary'
+					/>
+				) : (
+					<PaperButton
+						value='LOGOUT'
+						onClick={() => handleLogout()}
+						className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary'
+					/>
+				)}
 			</nav>
 
 			<motion.div
@@ -83,11 +103,19 @@ const Navbar = () => {
 									</Link>
 								</li>
 							))}
-							<PaperButton
-								value='LOGIN'
-								onClick={() => navigate('/auth/login')}
-								className='border-secondary dark:border-primary px-2 py-1'
-							/>
+							{!currentUser ? (
+								<PaperButton
+									value='LOGIN'
+									onClick={() => navigate('/auth/login')}
+									className='border-secondary dark:border-primary px-2 py-1'
+								/>
+							) : (
+								<PaperButton
+									value='Logout'
+									onClick={() => handleLogout()}
+									className='border-secondary dark:border-primary px-2 py-1'
+								/>
+							)}
 						</ul>
 						<p className='font-sans text-[12px] dark:text-primary/80 text-secondary/80'>Cruse Cloting &copy; 2024</p>
 					</motion.div>

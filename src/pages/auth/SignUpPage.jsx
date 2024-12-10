@@ -1,15 +1,27 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 
 import PaperTextBox from '../../components/utilities/PaperTextBox'
 import PaperButton from '../../components/utilities/PaperButton'
 import PaperNotify from '../../components/utilities/PaperNotify'
 
 import { signInWithGooglePopup, createUserProfileDocument, CreateCustomUser } from '../../firebase/utils'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { AnimatePresence } from 'framer-motion'
 
+import { UserContext } from '../../context/UserContext'
+
 const SignUpPage = () => {
+
+	const navigate = useNavigate()
+
+	const { currentUser, setCurrentUser } = useContext(UserContext)
+	useEffect(() => {
+		if (currentUser) {
+			navigate('/')
+		}
+	}, [currentUser])
+
 
 	const [loginFormData, setLoginFormData] = useState({
 		displayName: '',
@@ -100,8 +112,13 @@ const SignUpPage = () => {
 		try {
 			const { user } = await signInWithGooglePopup()
 			await createUserProfileDocument(user)
+			setCurrentUser(user)
+			resetForm()
 		} catch (error) {
-			console.log('Error Signing in with Google', error.message)
+			setNotifyStatus({
+				message: 'Error Signing in with Google',
+				status: 'error'
+			})
 		}
 	}
 
@@ -119,7 +136,7 @@ const SignUpPage = () => {
 					})
 				}
 			} else {
-				console.log(user)
+				setCurrentUser(user)
 			}
 		} else {
 			setNotifyStatus({

@@ -1,14 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 
 import PaperTextBox from '../../components/utilities/PaperTextBox'
 import PaperButton from '../../components/utilities/PaperButton'
 import PaperNotify from '../../components/utilities/PaperNotify'
 
 import { signInWithGooglePopup, createUserProfileDocument, signInWithEmailPassword } from '../../firebase/utils'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'motion/react'
 
+import { UserContext } from '../../context/UserContext'
+
 const LoginPage = () => {
+
+	const navigate = useNavigate()
+	const { currentUser, setCurrentUser } = useContext(UserContext)
+	
+	useEffect(() => {
+		if (currentUser) {
+			navigate('/auth/signup')
+		}
+	}, [currentUser])
 
 	const [loginFormData, setLoginFormData] = useState({
 		email: '',
@@ -34,11 +45,17 @@ const LoginPage = () => {
 			const { user } = await signInWithGooglePopup()
 			const loginData = await createUserProfileDocument(user)
 			if (loginData.error) {
-				console.log('Error Logging in with Google', loginData.error)
+				setNotifyStatus({
+					message: 'Error Logging in with Google',
+					status: 'error'
+				})
 			}
 			setMessage(user.displayName)
 		} catch (error) {
-			console.log('Error Signing in with Google', error.message)
+			setNotifyStatus({
+				message: 'Error Logging in with Google',
+				status: 'error'
+			})
 		}
 	}
 
@@ -51,7 +68,7 @@ const LoginPage = () => {
 					status: 'warning'
 				})
 			}
-			console.log('User', user)
+			setCurrentUser(user)
 
 		} catch (error) {
 			if (error.code === 'auth/user-not-found') {

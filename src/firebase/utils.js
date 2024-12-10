@@ -1,8 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
-
-
 import {
 	getAuth,
 	signInWithPopup,
@@ -88,11 +86,15 @@ const CreateCustomUser = async (formData) => {
 	}
 }
 
+const LogOutUser = () => {
+	return signOut(auth);
+}
+
 export {
 	firebseApp,
 	firebaseAnalytics,
 	signInWithGooglePopup,
-	signOut,
+	LogOutUser,
 	signInWithEmailPassword,
 	createUserProfileDocument,
 	CreateCustomUser
