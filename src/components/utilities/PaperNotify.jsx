@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import PropTypes from 'prop-types'
 
 const variants = {
-	initial: { opacity: 0, x: -50, y: 50 },
+	initial: { opacity: 0, x: 100, y: 0 },
 	animate: { opacity: 1, x: 0, y: 0 },
 	exit: { opacity: 0 }
 }

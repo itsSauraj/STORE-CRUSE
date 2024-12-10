@@ -6,7 +6,6 @@ import {
 	signInWithPopup,
 	GoogleAuthProvider,
 	signOut,
-	onAuthStateChanged,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 	sendPasswordResetEmail,
@@ -19,7 +18,6 @@ import {
 	setDoc,
 	getDoc,
 } from "firebase/firestore";
-import { form } from "motion/react-client";
 
 
 const firebaseConfig = {
@@ -32,14 +30,14 @@ const firebaseConfig = {
 	measurementId: import.meta.env.VITE_MEASSUREMENT_ID,
 };
 
-const firebseApp = initializeApp(firebaseConfig);
-const firebaseAnalytics = getAnalytics(firebseApp);
+const firebaseApp = initializeApp(firebaseConfig);
+const firebaseAnalytics = getAnalytics(firebaseApp);
 
 const providerPopUp = new GoogleAuthProvider();
 
 providerPopUp.setCustomParameters({ prompt: "select_account" });
 
-export const auth = getAuth(firebseApp);
+const auth = getAuth(firebaseApp);
 
 const signInWithGooglePopup = () => signInWithPopup(auth, providerPopUp);
 
@@ -47,7 +45,7 @@ const signInWithEmailPassword = (email, password) => {
 	return signInWithEmailAndPassword(auth, email, password);
 }
 
-const db = getFirestore(firebseApp);
+const db = getFirestore(firebaseApp);
 
 const createUserProfileDocument = async (userAuth, additionalData) => {
 	if (!userAuth) return;
@@ -58,7 +56,8 @@ const createUserProfileDocument = async (userAuth, additionalData) => {
 
 	if (!snapShot.exists()) {
 		const createdAt = new Date();
-		const { displayName, email } = additionalData;
+		let displayName = userAuth.displayName || additionalData.displayName;
+		let email = userAuth.email || additionalData.email;
 
 		try {
 			await setDoc(userRef, {
@@ -91,7 +90,8 @@ const LogOutUser = () => {
 }
 
 export {
-	firebseApp,
+	auth,
+	firebaseApp,
 	firebaseAnalytics,
 	signInWithGooglePopup,
 	LogOutUser,

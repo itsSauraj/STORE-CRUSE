@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import PaperButton from './utilities/PaperButton'
 
 import { UserContext } from '../context/UserContext'
+import { NotificationContext } from '../context/NotificationContext'
 import { LogOutUser } from '../firebase/utils'
 // import { }
 
@@ -31,6 +32,7 @@ const navLinks = [
 const Navbar = () => {
 
 	const { currentUser, setCurrentUser } = useContext(UserContext)
+	const { setNotification } = useContext(NotificationContext)
 
 	const [nav, setNav] = useState(false)
 	const location = useLocation()
@@ -47,6 +49,11 @@ const Navbar = () => {
 	const handleLogout = async () => {
 		setCurrentUser(null)
 		await LogOutUser()
+		setNotification({
+			message: 'User Logged Out',
+			status: 'success'
+		})
+		setNav(false)
 	}
 
 	return (

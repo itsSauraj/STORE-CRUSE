@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { useEffect, useState, useContext } from 'react'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import ThemeToggle from '../components/ThemeToggle'
 
@@ -7,10 +7,22 @@ import Navbar from '../components/Navbar'
 
 import Transition from '../components/Transition'
 
+import { UserContext } from '../context/UserContext'
+
 const Auth = () => {
 
+	const navigate = useNavigate()
 	const location = useLocation()
 	const [reload, setReload] = useState(false)
+
+	const { currentUser } = useContext(UserContext)
+
+	useEffect(() => {
+		if (currentUser) {
+			navigate('/')
+		}
+	}, [currentUser])
+
 
 	useEffect(() => {
 		setReload(true)

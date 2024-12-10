@@ -1,35 +1,22 @@
-import { useEffect, useState, useContext } from 'react'
+import { useState, useContext } from 'react'
 
 import PaperTextBox from '../../components/utilities/PaperTextBox'
 import PaperButton from '../../components/utilities/PaperButton'
-import PaperNotify from '../../components/utilities/PaperNotify'
 
 import { signInWithGooglePopup, createUserProfileDocument, signInWithEmailPassword } from '../../firebase/utils'
-import { Link, useNavigate } from 'react-router-dom'
-import { AnimatePresence } from 'motion/react'
+import { Link } from 'react-router-dom'
 
 import { UserContext } from '../../context/UserContext'
+import { NotificationContext } from "../../context/NotificationContext"
 
 const LoginPage = () => {
 
-	const navigate = useNavigate()
-	const { currentUser, setCurrentUser } = useContext(UserContext)
-	
-	useEffect(() => {
-		if (currentUser) {
-			navigate('/auth/signup')
-		}
-	}, [currentUser])
+	const { setCurrentUser } = useContext(UserContext)
+	const { setNotification } = useContext(NotificationContext)
 
 	const [loginFormData, setLoginFormData] = useState({
 		email: '',
 		password: ''
-	})
-
-	const [status, setStatus] = useState({})
-	const [notifyStatus, setNotifyStatus] = useState({
-		message: null,
-		status: null
 	})
 
 	const handelChange = (e) => {
@@ -38,21 +25,13 @@ const LoginPage = () => {
 			[e.target.name]: e.target.value
 		})
 	}
-	const [message, setMessage] = useState('Name will appear here')
 
 	const handelSignInWithGoogle = async () => {
 		try {
 			const { user } = await signInWithGooglePopup()
-			const loginData = await createUserProfileDocument(user)
-			if (loginData.error) {
-				setNotifyStatus({
-					message: 'Error Logging in with Google',
-					status: 'error'
-				})
-			}
-			setMessage(user.displayName)
+			setCurrentUser(user)
 		} catch (error) {
-			setNotifyStatus({
+			setNotification({
 				message: 'Error Logging in with Google',
 				status: 'error'
 			})
@@ -63,7 +42,7 @@ const LoginPage = () => {
 		try{
 			const { user } = await signInWithEmailPassword(loginFormData.email, loginFormData.password)
 			if (!user.emailVerified) {
-				setNotifyStatus({
+				setNotification({
 					message: 'Please verify your email',
 					status: 'warning'
 				})
@@ -72,13 +51,27 @@ const LoginPage = () => {
 
 		} catch (error) {
 			if (error.code === 'auth/user-not-found') {
-				setNotifyStatus({
+				setNotification({
 					message: 'Email not found',
 					status: 'error'
 				})
-			} else if (error.code === 'auth/invalid-email' || error.code === 'auth/wrong-password') {
-				setNotifyStatus({
+			} else if (error.code === 'auth/invalid-email' || 
+					error.code === 'auth/wrong-password' || 
+					error.code === 'auth/user-disabled' || 
+					error.code === 'auth/invalid-credential'
+			) {
+				setNotification({
 					message: 'Invalid Credentials',
+					status: 'error'
+				})
+			} else if(error.code === 'auth/too-many-requests') {
+				setNotification({
+					message: 'Too many requests, Please try again later',
+					status: 'error'
+				})
+			} else if (error.code === 'auth/missing-password') {
+				setNotification({
+					message: 'Please enter a password',
 					status: 'error'
 				})
 			}
@@ -88,21 +81,12 @@ const LoginPage = () => {
 
 	return (
 		<>
-			<AnimatePresence>
-				{(notifyStatus.message && notifyStatus.status) &&  
-					<PaperNotify 
-						notifyStatus={notifyStatus}
-						setNotifyStatus={setNotifyStatus}
-						duration={2500}
-					/>}
-			</AnimatePresence>
 			<div className="flex justify-center items-center flex-grow h-[100%] flex-col">
 				<form className='w-[80%] md:w-[50%] lg:w-[30%] flex gap-4 flex-col'>
 					<div className='flex justify-center items-center flex-col'>
 						<h3 className='text-2xl font-bold'>I already have an account</h3>
 						<p className='text-[16.5px] text-light opacity-80'>Sign in with your email and password</p>
 					</div>
-					<span>{message}</span>
 					<PaperTextBox 
 						// label={'Email'}
 						id={'cruse_email'}
@@ -110,7 +94,6 @@ const LoginPage = () => {
 						name={`email`} 
 						onChange={handelChange}
 						placeholder={`Email`}
-						status={status.email}
 					/>
 					<PaperTextBox 
 						// label={'Password'}
@@ -120,7 +103,6 @@ const LoginPage = () => {
 						name={`password`} 
 						onChange={handelChange}
 						placeholder={`Password`}
-						status={status.password && status.password}
 					/>
 					<div className='flex gap-4'>
 

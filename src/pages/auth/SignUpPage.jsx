@@ -2,26 +2,18 @@ import { useEffect, useState, useContext } from 'react'
 
 import PaperTextBox from '../../components/utilities/PaperTextBox'
 import PaperButton from '../../components/utilities/PaperButton'
-import PaperNotify from '../../components/utilities/PaperNotify'
 
 import { signInWithGooglePopup, createUserProfileDocument, CreateCustomUser } from '../../firebase/utils'
-import { Link, useNavigate } from 'react-router-dom'
-
-import { AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 import { UserContext } from '../../context/UserContext'
+import { NotificationContext } from "../../context/NotificationContext"
 
 const SignUpPage = () => {
 
-	const navigate = useNavigate()
 
-	const { currentUser, setCurrentUser } = useContext(UserContext)
-	useEffect(() => {
-		if (currentUser) {
-			navigate('/')
-		}
-	}, [currentUser])
-
+	const { setCurrentUser } = useContext(UserContext)
+	const { setNotification } = useContext(NotificationContext)
 
 	const [loginFormData, setLoginFormData] = useState({
 		displayName: '',
@@ -40,10 +32,6 @@ const SignUpPage = () => {
 	}
 
 	const [status, setStatus] = useState({})
-	const [notifyStatus, setNotifyStatus] = useState({
-		message: null,
-		status: null
-	})
 
 	const handelChange = (e) => {
 		setLoginFormData({
@@ -115,7 +103,7 @@ const SignUpPage = () => {
 			setCurrentUser(user)
 			resetForm()
 		} catch (error) {
-			setNotifyStatus({
+			setNotification({
 				message: 'Error Signing in with Google',
 				status: 'error'
 			})
@@ -130,7 +118,7 @@ const SignUpPage = () => {
 
 			if (user.error) {
 				if (user.error.code === 'auth/email-already-in-use') {
-					setNotifyStatus({
+					setNotification({
 						message: 'Email already in use',
 						status: 'error'
 					})
@@ -139,7 +127,7 @@ const SignUpPage = () => {
 				setCurrentUser(user)
 			}
 		} else {
-			setNotifyStatus({
+			setNotification({
 				message: 'Please check the form for errors',
 				status: 'error'
 			})
@@ -149,14 +137,6 @@ const SignUpPage = () => {
 
 	return (
 		<>
-			<AnimatePresence>
-				{(notifyStatus.message && notifyStatus.status) &&
-					<PaperNotify
-						notifyStatus={notifyStatus}
-						setNotifyStatus={setNotifyStatus}
-						duration={2500}
-					/>}
-			</AnimatePresence>
 			<div className="flex justify-center items-center flex-grow h-[100%] flex-col">
 				<form className='w-[80%] md:w-[50%] lg:w-[30%] flex gap-4 flex-col' onSubmit={handelFormSubmit}>
 					<div className='flex justify-center items-center flex-col'>
