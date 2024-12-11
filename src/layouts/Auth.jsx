@@ -33,7 +33,7 @@ const Auth = () => {
 
 	return (
 		<div className='flex flex-col h-[100svh]'>
-			<ThemeToggle />
+			<ThemeToggle />	
 			<Navbar />
 			{reload ? (
 				<Transition component={<Outlet />} />

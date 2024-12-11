@@ -12,6 +12,7 @@ import HelpPage from './pages/default/HelpPage'
 
 import LoginPage from './pages/auth/LoginPage'
 import SignUpPage from './pages/auth/SignUpPage'
+import PasswordResetPage from './pages/auth/PasswordResetPage'
 
 // Importing CSS
 import './App.css'
@@ -51,6 +52,10 @@ const BrowserRouter = createBrowserRouter([
 			{
 				path: "signup",
 				element: <SignUpPage />,
+			},
+			{
+				path: "password-reset",
+				element: <PasswordResetPage />,
 			}
 		]
 	}

@@ -10,6 +10,7 @@ import {
 	signInWithEmailAndPassword,
 	sendPasswordResetEmail,
 	sendEmailVerification,
+	onAuthStateChanged,
 } from "firebase/auth";
 
 import {
@@ -71,8 +72,9 @@ const createUserProfileDocument = async (userAuth, additionalData) => {
 				createdAt,
 				passwordSet,
 			});
+			sendEmailVerification(userAuth);
 		} catch (error) {
-			console.log("Error creating user", error.message);
+			return { error: error };
 		}
 	}
 
@@ -81,17 +83,13 @@ const createUserProfileDocument = async (userAuth, additionalData) => {
 
 const CreateCustomUser = async (formData) => {
 	try {
-		const { user } = await createUserWithEmailAndPassword(auth, formData.email, formData.password1);
-		createUserProfileDocument(user, formData);
-		const mail = await sendEmailVerification(user);
-
-		return user;
+		await createUserWithEmailAndPassword(auth, formData.email, formData.password1);
 	} catch (error) {
 		return { error: error };
 	}
 }
 
-const chechIfUserPasswordSet = async (userEmail) => {
+const checkIfUserPasswordSet = async (userEmail) => {
 
 	const userCollectionInstance = collection(db, "users");
 	const userQuery = query(userCollectionInstance, where("email", "==", userEmail));
@@ -103,8 +101,16 @@ const chechIfUserPasswordSet = async (userEmail) => {
 
 }
 
-const LogOutUser = () => {
-	return signOut(auth);
+const sendPasswordResetEmailToUser = async (email) => {
+	return sendPasswordResetEmail(auth, email);
+}
+
+const LogOutUser = async () => {
+	return await signOut(auth);
+}
+
+const AuthStateChanged = (callback) => {
+	return onAuthStateChanged(auth, callback);
 }
 
 export {
@@ -116,5 +122,7 @@ export {
 	signInWithEmailPassword,
 	createUserProfileDocument,
 	CreateCustomUser,
-	chechIfUserPasswordSet,
+	checkIfUserPasswordSet,
+	AuthStateChanged,
+	sendPasswordResetEmailToUser,
 }

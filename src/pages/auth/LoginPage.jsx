@@ -4,19 +4,16 @@ import PaperTextBox from '../../components/utilities/PaperTextBox'
 import PaperButton from '../../components/utilities/PaperButton'
 
 import { 
-	signInWithGooglePopup, 
-	createUserProfileDocument, 
+	signInWithGooglePopup,
 	signInWithEmailPassword,
-	chechIfUserPasswordSet,
+	checkIfUserPasswordSet,
 } from '../../firebase/utils'
 import { Link } from 'react-router-dom'
 
-import { UserContext } from '../../context/UserContext'
 import { NotificationContext } from "../../context/NotificationContext"
 
 const LoginPage = () => {
 
-	const { setCurrentUser } = useContext(UserContext)
 	const { setNotification } = useContext(NotificationContext)
 
 	const [loginFormData, setLoginFormData] = useState({
@@ -33,9 +30,7 @@ const LoginPage = () => {
 
 	const handelSignInWithGoogle = async () => {
 		try {
-			const { user } = await signInWithGooglePopup()
-			await createUserProfileDocument(user)
-			setCurrentUser(user)
+			await signInWithGooglePopup()
 		} catch (error) {
 			setNotification({
 				message: 'Error Logging in with Google',
@@ -46,18 +41,9 @@ const LoginPage = () => {
 
 	const handelLoginWithEmailPassword = async () => {
 		try{
-			const { user } = await signInWithEmailPassword(loginFormData.email, loginFormData.password)
-			if (!user.emailVerified) {
-				setNotification({
-					message: 'Please verify your email',
-					status: 'warning'
-				})
-			}
-			setCurrentUser(user)
-
+			await signInWithEmailPassword(loginFormData.email, loginFormData.password)
 		} catch (error) {
-			console.log(!chechIfUserPasswordSet(loginFormData.email))
-			if (!chechIfUserPasswordSet(loginFormData.email)){
+			if (!checkIfUserPasswordSet(loginFormData.email)){
 				setNotification({
 					message: 'Please enter a password',
 					status: 'warning'
@@ -151,9 +137,13 @@ const LoginPage = () => {
 						/>
 					</div>
 				</form>
-				<div className='flex justify-center items-center text-[14px] p-5'>
-					Don&apos;t have an account? 
-					<Link to={`/auth/signup`} className=' text-[14px] px-1 hover:underline'>Sign Up</Link></div>
+				<div className='flex flex-col gap-2 p-5'>
+					<div className='flex justify-center items-center text-[14px]'>
+						Don&apos;t have an account? 
+						<Link to={`/auth/signup`} className=' text-[14px] px-1 hover:underline'>Sign Up</Link></div>
+					<div className='flex justify-center items-center text-[14px]'>
+						<Link to={`/auth/password-reset`} className=' text-[14px] px-1 hover:underline'>Forgot Pawword?</Link></div>
+				</div>
 			</div>
 		</>
 	)

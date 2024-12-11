@@ -3,16 +3,13 @@ import { useEffect, useState, useContext } from 'react'
 import PaperTextBox from '../../components/utilities/PaperTextBox'
 import PaperButton from '../../components/utilities/PaperButton'
 
-import { signInWithGooglePopup, createUserProfileDocument, CreateCustomUser } from '../../firebase/utils'
-import { Link } from 'react-router-dom'
-
-import { UserContext } from '../../context/UserContext'
+import { signInWithGooglePopup, CreateCustomUser } from '../../firebase/utils'
+import { Link, useNavigate } from 'react-router-dom'
 import { NotificationContext } from "../../context/NotificationContext"
 
 const SignUpPage = () => {
 
-
-	const { setCurrentUser } = useContext(UserContext)
+	const navigate = useNavigate()
 	const { setNotification } = useContext(NotificationContext)
 
 	const [loginFormData, setLoginFormData] = useState({
@@ -98,9 +95,7 @@ const SignUpPage = () => {
 
 	const handelSignInWithGoogle = async () => {
 		try {
-			const { user } = await signInWithGooglePopup()
-			await createUserProfileDocument(user)
-			setCurrentUser(user)
+			await signInWithGooglePopup()
 			resetForm()
 		} catch (error) {
 			setNotification({
@@ -114,17 +109,20 @@ const SignUpPage = () => {
 		e.preventDefault()
 		
 		if (!status.password1 && !status.password2) {
-			const user = await CreateCustomUser(loginFormData)
-
-			if (user.error) {
-				if (user.error.code === 'auth/email-already-in-use') {
+			try{
+				const status = await CreateCustomUser(loginFormData)
+				if (status.error) {
 					setNotification({
-						message: 'Email already in use',
+						message: "Emali already exists please login",
 						status: 'error'
 					})
+					navigate('/auth/login')
 				}
-			} else {
-				setCurrentUser(user)
+			} catch (error) {
+				setNotification({
+					message: 'Error Creating User',
+					status: 'error'
+				})
 			}
 		} else {
 			setNotification({

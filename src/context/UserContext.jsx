@@ -1,4 +1,7 @@
-import { createContext, useState, useEffect } from "react"
+import { createContext, useState, useEffect, useContext } from "react"
+
+import { AuthStateChanged, createUserProfileDocument } from "../firebase/utils"
+import { NotificationContext } from "./NotificationContext"
 
 import PropTypes from 'prop-types'
 
@@ -8,6 +11,9 @@ const UserContext = createContext({
 })
 
 const UserProvider = ({ children }) => {
+
+	const { setNotification } = useContext(NotificationContext)
+
 	const [currentUser, setCurrentUser] = useState(() => {
 		const user = localStorage.getItem('user')
 		return user ? JSON.parse(user) : null
@@ -16,6 +22,23 @@ const UserProvider = ({ children }) => {
 	useEffect(() => {
 		localStorage.setItem('user', JSON.stringify(currentUser))
 	}, [currentUser])
+
+	useEffect(() => {
+		const unsubscribe = AuthStateChanged((user) => {
+			if (user) {
+				const userProfile = createUserProfileDocument(user)
+				if (userProfile.error){
+					setNotification({
+						message: 'Something went wrong',
+						status: 'error'
+					})
+				}
+			}
+			setCurrentUser(user)
+		})
+
+		return () => unsubscribe()
+	},)
 
 	return (
 		<UserContext.Provider value={{ currentUser, setCurrentUser }}>
