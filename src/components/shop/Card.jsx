@@ -1,17 +1,42 @@
+import React, { useContext, useState } from 'react'
 import { motion } from 'framer-motion'
 
 import PaperButton from '../utilities/PaperButton';
 
 import PropTypes from 'prop-types';
 
-import { useState } from 'react';
+import { NotificationContext } from '../../context/NotificationContext';
+import { ShopContext } from '../../context/ShopContext';
 
 const Card = ({ item }) => {
 	const [isLoading, setIsLoading] = useState(true);
 
+	const { setNotification } = useContext(NotificationContext);
+	const { cart, setCart } = useContext(ShopContext);
+
 	const handleImageLoad = () => {
 		setIsLoading(false);
 	};
+
+	const handleAddToCart = () => {
+		const updatedCart = cart || [];
+		const itemIndex = updatedCart.findIndex((cartItem) => cartItem.id === item.id);
+		if (itemIndex === -1) {
+			setCart([...updatedCart, { ...item, quantity: 1 }]);
+		} else {
+			const newCart = updatedCart.map((cartItem) => {
+				if (cartItem.id === item.id) {
+					return { ...cartItem, quantity: cartItem.quantity + 1 };
+				}
+				return cartItem;
+			});
+			setCart(newCart);
+		}
+		setNotification({
+			message: 'Item added to cart',
+			status: 'success',
+		});
+	}
 
 	return (
 		<motion.div
@@ -32,10 +57,10 @@ const Card = ({ item }) => {
 				/>
 				<div className='flex justify-between'>
 					<h4 className='truncate w-[80%]'>{item.title}</h4>
-					<span>${item.price}</span>
+					<span>₹ {item.price}</span>
 				</div>
 				<div className='flex gap-4 justify-between items-bottom flex-grow w-full relative'>
-					<PaperButton value='Add to Cart' className='border-secondary dark:border-primary'/>
+					<PaperButton value='Add to Cart' className='border-secondary dark:border-primary' onClick={handleAddToCart}/>
 					<PaperButton value='Buy Now' className='border-secondary dark:border-primary'/>
 				</div>
 			</div>

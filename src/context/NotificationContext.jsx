@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 
 const NotificationContext = createContext({
 	notification: null,
-	setNotification: () => { },
+	setNotification: () => {},
 })
 
 const NotificationProvider = ({ children }) => {

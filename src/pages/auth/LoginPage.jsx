@@ -7,7 +7,7 @@ import {
 	signInWithGooglePopup,
 	signInWithEmailPassword,
 	checkIfUserPasswordSet,
-} from '../../firebase/utils'
+} from '../../firebase/filrebase.utils'
 import { Link } from 'react-router-dom'
 
 import { NotificationContext } from "../../context/NotificationContext"

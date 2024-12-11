@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react"
 
-import { AuthStateChanged, createUserProfileDocument } from "../firebase/utils"
+import { AuthStateChanged, createUserProfileDocument } from "../firebase/filrebase.utils"
 import { NotificationContext } from "./NotificationContext"
 
 import PropTypes from 'prop-types'

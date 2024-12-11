@@ -14,6 +14,11 @@ const PaperNotify = ({ notifyStatus, setNotifyStatus, duration=3000 }) => {
 
 	useEffect(() => {
 		showNotify()
+
+		return () => {
+			showNotify
+		}
+
 	}, [notifyStatus])
 
 	const showNotify = () => {

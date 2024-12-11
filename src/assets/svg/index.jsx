@@ -1,4 +1,4 @@
-import BagIcon from "./Bag";
+import BagIcon from "./BagIcon";
 
 import BrandIcon from "./BrandIcon";
 

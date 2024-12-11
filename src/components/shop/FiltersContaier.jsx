@@ -29,7 +29,7 @@ const FiltersContaier = ({ filters, originalData, setFilteredData }) => {
 		} else {
 			setFilteredData(
 				originalData.filter((item) =>
-					activeFilters.some((filter) =>
+					activeFilters.every((filter) =>
 						item.category.includes(filter.toLowerCase())
 					)
 				)
@@ -57,10 +57,11 @@ const FiltersContaier = ({ filters, originalData, setFilteredData }) => {
 		filterItems();
 
 		return () => {
-			handleFilterChange();
-			filterItems();
+			handleFilterChange
+			filterItems
 		};
 	}, [activeFilters]);
+
 
 	return (
 		<div className="w-full overflow-x-auto flex justify-start lg:justify-center">
@@ -71,11 +72,11 @@ const FiltersContaier = ({ filters, originalData, setFilteredData }) => {
 						onClick={handleFilter}
 						value={filter}
 						className={`
-					uppercase w-max px-4 mx-2 border-color-primary dark:border-secondary
-					${activeFilters.includes(filter.toUpperCase())
+						uppercase w-max px-4 mx-2 border-color-primary dark:border-secondary
+						${activeFilters.includes(filter.toUpperCase()) 
 						? "bg-primary dark:bg-secondary text-secondary dark:text-primary border-primary dark:border-secondary"
 						: "bg-secondary dark:bg-primary text-primary dark:text-secondary"
-					} `}
+					}`}
 					>
 						{filter}
 					</PaperButton>

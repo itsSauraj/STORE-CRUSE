@@ -125,4 +125,6 @@ export {
 	checkIfUserPasswordSet,
 	AuthStateChanged,
 	sendPasswordResetEmailToUser,
+
+	db,
 }

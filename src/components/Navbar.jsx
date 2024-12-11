@@ -11,8 +11,9 @@ import PaperButton from './utilities/PaperButton'
 
 import { UserContext } from '../context/UserContext'
 import { NotificationContext } from '../context/NotificationContext'
-import { LogOutUser } from '../firebase/utils'
-// import { }
+import { LogOutUser } from '../firebase/filrebase.utils'
+
+import { BagIcon } from '../assets/svg'
 
 const navLinks = [
 	{
@@ -44,6 +45,10 @@ const Navbar = () => {
 
 	useEffect(() => {
 		setNav(false)
+
+		return () => {
+			setNav
+		}
 	}, [location])
 
 	const handleLogout = async () => {
@@ -82,15 +87,28 @@ const Navbar = () => {
 						className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary'
 					/>
 				)}
+				<BagIcon 
+					width={80} 
+					height={80}
+					strokeColor='stroke-primary dark:stroke-secondary'
+					textColor='fill-primary dark:fill-secondary'
+				/>
 			</nav>
-
-			<motion.div
-				onClick={handleNav}
-				className='block md:hidden'
-				whileTap={{ scale: 0.9 }}
-			>
-				{nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
-			</motion.div>
+			
+			<div className='flex gap-2 items-center md:hidden'>
+				<BagIcon 
+					width={25} 
+					height={25}
+					strokeColor='stroke-primary dark:stroke-secondary'
+					textColor='fill-primary dark:fill-secondary'
+				/>
+				<motion.div
+					onClick={handleNav}
+					whileTap={{ scale: 0.9 }}
+				>
+					{nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
+				</motion.div>
+			</div>
 
 			<AnimatePresence mode="wait">{nav && (
 				<>
@@ -116,12 +134,13 @@ const Navbar = () => {
 									onClick={() => navigate('/auth/login')}
 									className='border-secondary dark:border-primary px-2 py-1'
 								/>
-							) : (
+							) : (<>
 								<PaperButton
 									value='Logout'
 									onClick={() => handleLogout()}
 									className='border-secondary dark:border-primary px-2 py-1'
 								/>
+							</>
 							)}
 						</ul>
 						<p className='font-sans text-[12px] dark:text-primary/80 text-secondary/80'>Cruse Cloting &copy; 2024</p>
