@@ -1,7 +1,13 @@
-import { createContext, useState, useEffect, useContext } from "react"
+import { createContext, useState, useEffect, useContext, useReducer } from "react"
 import { fetchAllProducts, fecthUserCart, updateUserCart } from "../firebase/shop.utils"
 
 import { UserContext } from "./UserContext"
+import {
+	initialState,
+	shopReducer,
+	SHOP_REDUCER_ACTIONS,
+	updateCartData as updateCartDataFunc,
+} from "./ShopReducerFunctions"
 
 import PropTypes from 'prop-types'
 
@@ -18,8 +24,37 @@ const ShopProvider = ({ children }) => {
 	
 	const [products, setProducts] = useState(() => {[]})
 	const [cart, setCart] = useState([])
+	const [ userCart, setUserCart ] = useState([])
+
+	const [state, dispatch] = useReducer(shopReducer, initialState)
 
 	useEffect(() => {
+		if (userCart.length > 0) {
+			dispatch({
+				type: SHOP_REDUCER_ACTIONS.INITIALIZE,
+				payload: userCart
+			})
+		}
+	}, [userCart])
+
+	useEffect(() => {
+		const updateStateOnServer = async () => {
+			await updateCartDataFunc(currentUser, state.cart)
+		}
+		updateStateOnServer()
+	}, [state])
+
+	useEffect(() => {
+
+		const fetchCurrentUserCartData = async () => {
+			const Cart = await fecthUserCart(currentUser)
+			setUserCart(Cart)
+		}
+		if (currentUser) {
+			fetchCurrentUserCartData()
+		}
+
+
 		const fetchProducts = async () => {
 			const fetchedProducts = await fetchAllProducts()
 			setProducts(fetchedProducts)
