@@ -42,7 +42,7 @@ const PaperNotify = ({ notifyStatus, setNotifyStatus, duration=3000 }) => {
 	return (
 		<motion.div 
 			className={`position ${display} 
-				absolute 
+				fixed 
 				top-0 md:top-[30px] right-0
 				md:right-[30px] lg:right-[30px]
 				p-3 z-50 

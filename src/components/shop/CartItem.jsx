@@ -2,14 +2,15 @@ import React, { useContext } from 'react'
 import { FaXmark} from "react-icons/fa6";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 
-import {  ShopContext } from '../../context/ShopContext'
+import { ShopContext } from '../../context/ShopContext'
+import { NotificationContext } from '../../context/NotificationContext';
 
 import PropTypes from 'prop-types'
 
 const CartItem = ({ item }) => {
 
 	const { setCart } = useContext(ShopContext)
-
+	const { setNotification } = useContext(NotificationContext)
 
 	const handleQuantity = (type) => {
 		if (type === 'inc') {
@@ -37,6 +38,10 @@ const CartItem = ({ item }) => {
 
 	const handleRemove = () => {
 		setCart((prev) => prev.filter((cartItem) => cartItem.id !== item.id))
+		setNotification({
+			message: `${item.title} removed from cart`,
+			status: 'success'
+		})
 	}
 
 	return (

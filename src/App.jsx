@@ -33,14 +33,6 @@ const BrowserRouter = createBrowserRouter([
 				element: <ShopPage />,
 			},
 			{
-				path: "about",
-				element: <AboutPage />,
-			},
-			{
-				path: "help",
-				element: <HelpPage />,
-			},
-			{
 				path: "checkout",
 				element: <Checkout />,
 			},

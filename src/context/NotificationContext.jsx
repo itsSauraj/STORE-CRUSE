@@ -1,4 +1,4 @@
-import { createContext, useState } from "react"
+import { createContext, useReducer } from "react"
 import { AnimatePresence } from 'framer-motion'
 import PaperNotify from '../components/utilities/PaperNotify'
 
@@ -9,8 +9,45 @@ const NotificationContext = createContext({
 	setNotification: () => {},
 })
 
+const initialState = {
+	notification : null,
+	duration: 3000
+}
+
+const NOTIFICATION_ACTIONS = {
+	SHOW_NOTIFICATION: 'SHOW_NOTIFICATION',
+	SET_DURATION: 'SET_DURATION',
+}
+
+const notificationReducer = (state, action) => {
+	switch (action.type) {
+	case NOTIFICATION_ACTIONS.SHOW_NOTIFICATION:
+		return {
+			...state,
+			notification: action.payload
+		}
+	case NOTIFICATION_ACTIONS.SET_DURATION:
+		return {
+			...state,
+			duration: action.payload
+		}
+	default:
+		return state
+	}
+}
+
+
 const NotificationProvider = ({ children }) => {
-	const [notification, setNotification] = useState(null)
+
+	const [state, dispatch] = useReducer(notificationReducer, initialState)
+	const { notification, duration } = state
+
+	const setNotification = (notification) => {
+		dispatch({
+			type: NOTIFICATION_ACTIONS.SHOW_NOTIFICATION,
+			payload: notification
+		})
+	}
 
 	return (
 		<NotificationContext.Provider value={{ notification, setNotification }}>
@@ -20,7 +57,7 @@ const NotificationProvider = ({ children }) => {
 						<PaperNotify
 							notifyStatus={notification}
 							setNotifyStatus={setNotification}
-							duration={3000}
+							duration={duration}
 						/>}
 				</AnimatePresence>
 			}

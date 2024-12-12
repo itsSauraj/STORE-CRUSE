@@ -22,14 +22,6 @@ const navLinks = [
 		title: 'Shop',
 		to: '/shop'
 	},
-	{
-		title: 'About',
-		to: '/about'
-	},
-	{
-		title: 'help',
-		to: '/help'
-	}
 ]
 
 const Navbar = () => {

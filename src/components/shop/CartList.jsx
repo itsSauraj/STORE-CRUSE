@@ -1,6 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, Fragment } from 'react'
 
 import { ShopContext } from '../../context/ShopContext'
+import { NotificationContext } from '../../context/NotificationContext'
 
 import CartItem from './CartItem'
 
@@ -10,9 +11,14 @@ import PaperButton from '../utilities/PaperButton'
 const CartList = () => {
 
 	const { cart, setCart } = useContext(ShopContext)
+	const { setNotification } = useContext(NotificationContext)
 
 	const handelClearCart = () => {
 		setCart([])
+		setNotification({
+			message: 'Cart Cleared',
+			status: 'success'
+		})
 	}
 
 	const total = {
@@ -23,11 +29,11 @@ const CartList = () => {
 	return (
 		<div className='w-full md:w-[70%] lg:w-[50%]'>
 			<hr className='bg-primary dark:bg-secondary h-[2px] mt-3'/>
-			{cart.map((item, index) => (
-				<>
-					<CartItem item={item} key={index} />
+			{cart.map((item) => (
+				<Fragment key={item.id}>
+					<CartItem item={item}/>
 					<hr className='bg-primary dark:bg-secondary h-[2px]'/>
-				</>
+				</Fragment>
 			))}
 			<div className='flex p-7 gap-4 justify-end'>	
 				<PaperButton 
