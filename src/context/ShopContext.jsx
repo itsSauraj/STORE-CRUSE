@@ -19,8 +19,13 @@ const ShopProvider = ({ children }) => {
 	const [products, setProducts] = useState(() => {[]})
 	const [cart, setCart] = useState([])
 
-
 	useEffect(() => {
+		const fetchProducts = async () => {
+			const fetchedProducts = await fetchAllProducts()
+			setProducts(fetchedProducts)
+		}
+		fetchProducts()
+
 		try{
 			const local_cart = JSON.parse(localStorage.getItem('local-cart'))
 			if (local_cart.length > 0) {
@@ -71,12 +76,6 @@ const ShopProvider = ({ children }) => {
 	}
 
 	useEffect(() => {
-		const fetchProducts = async () => {
-			const products = await fetchAllProducts()
-			setProducts(products)
-		}
-		fetchProducts()
-
 		if (currentUser){
 			fetchUserCartContext()
 		}
@@ -85,7 +84,6 @@ const ShopProvider = ({ children }) => {
 			if (currentUser){
 				fetchUserCartContext()
 			}
-			fetchProducts()
 		}
 
 	}, [currentUser])
