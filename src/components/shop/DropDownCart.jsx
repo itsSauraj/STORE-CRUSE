@@ -1,11 +1,15 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
 
 import PropTypes from 'prop-types';
+import { ShopContext } from '../../context/ShopContext';
+
+import DropDownCard from './DropDownCard';
 
 const DropDownCart = ({ isOpen, setIsOpen }) => {
 
 	const dropdownRef = useRef(null);
+	const { cart } = useContext(ShopContext);
 
 	const handleClickOutside = (event) => {
 		if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -20,6 +24,8 @@ const DropDownCart = ({ isOpen, setIsOpen }) => {
 		};
 	}, []);
 
+	console.log(cart);
+
 	return (
 		<>
 			{isOpen && (
@@ -28,10 +34,24 @@ const DropDownCart = ({ isOpen, setIsOpen }) => {
 					initial={{ opacity: 0, y: -20 }}
 					animate={{ opacity: 1, y: 0 }}
 					exit={{ opacity: 0, y: -20 }}
-					className="bg-white shadow-md p-4 absolute top-0 right-0 md:top-[5rem] md:right-10 w-full md:w-[320px] z-50"
+					className="bg-white shadow-md p-2 fixed md:absolute top-0 md:top-[5rem] md:right-10 
+						w-full md:w-[320px] z-50 max-h-[60svh] overflow-y-scroll border-2 border-primary"
 				>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex animi quaerat odio at, corporis exercitationem quibusdam perspiciatis totam fugit ratione. Nesciunt, similique, explicabo voluptatem placeat nostrum ipsa sint ut ipsam itaque harum vero. Perferendis magnam odit sequi qui obcaecati accusantium minus nostrum quod, tempore enim, voluptate consequuntur. Officia qui voluptates, non eos facere laudantium quaerat. Excepturi laborum rerum reiciendis aspernatur eos libero eum accusantium quam repellat consectetur nemo eveniet sed, illo molestias at vero soluta possimus reprehenderit placeat doloribus in repellendus commodi. In repellat unde est eos, perspiciatis corrupti quaerat iure reiciendis distinctio culpa eligendi repudiandae necessitatibus. Rerum, architecto a.
-
+					{cart && (
+						<div className='flex p-3 flex-col gap-3'>
+							<div className='flex z-50  sticky top-0  bg-primary dark:bg-secondary text-secondary dark:text-primary w-[100%] justify-between p-3
+								border-[1px] border-secondary dark:border-primary
+							'>
+								<h3 className="text-lg font-semibold">My Cart</h3>	
+								<button className='hover:underline'>Checkout</button>
+							</div>
+							<div className='flex flex-col gap-3 text-primary'>
+								{cart.map((item) => (
+									<DropDownCard item={item} key={item.id} />
+								))}
+							</div>
+						</div>
+					)}
 				</motion.div>
 			)}
 		</>
