@@ -9,6 +9,7 @@ import HomePage from './pages/default/HomePage'
 import ShopPage from './pages/default/ShopPage'
 import AboutPage from './pages/default/AboutPage'
 import HelpPage from './pages/default/HelpPage'
+import Checkout from "./pages/default/Checkout";
 
 import LoginPage from './pages/auth/LoginPage'
 import SignUpPage from './pages/auth/SignUpPage'
@@ -38,6 +39,10 @@ const BrowserRouter = createBrowserRouter([
 			{
 				path: "help",
 				element: <HelpPage />,
+			},
+			{
+				path: "checkout",
+				element: <Checkout />,
 			},
 		]
 	},
