@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { ShopContext } from '../../context/ShopContext';
 
 import DropDownCard from './DropDownCard';
+import emptyCartPNG from '../../assets/images/empty-cart.png';
 
 const DropDownCart = ({ isOpen, setIsOpen }) => {
 
@@ -23,8 +24,6 @@ const DropDownCart = ({ isOpen, setIsOpen }) => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
 	}, []);
-
-	console.log(cart);
 
 	return (
 		<>
@@ -49,6 +48,21 @@ const DropDownCart = ({ isOpen, setIsOpen }) => {
 								{cart.map((item) => (
 									<DropDownCard item={item} key={item.id} />
 								))}
+							</div>
+						</div>
+					)}
+					{!cart && (
+						<div className='flex p-3 flex-col gap-3'>
+							<div className='flex z-50  sticky top-0  bg-primary dark:bg-secondary text-secondary dark:text-primary w-[100%] justify-between p-3
+								border-[1px] border-secondary dark:border-primary
+							'>
+								<h3 className="text-lg font-semibold">My Cart</h3>	
+							</div>
+							<div className='flex flex-col gap-3 text-primary'>
+								<motion.div className='h-[100%] w-[100%] border-[1px]  border-primary flex p-3 gap-4 flex-col items-center'>
+									<h3>Please add items to cart</h3>
+									<img src={emptyCartPNG} alt='Empty Cart' className='w-[50%]'/>
+								</motion.div>
 							</div>
 						</div>
 					)}

@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 
-import PaperButton from '../utilities/PaperButton';
-
 import PropTypes from 'prop-types';
 
 const DropDownCard = ({ item }) => {

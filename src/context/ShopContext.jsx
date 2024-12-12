@@ -17,13 +17,33 @@ const ShopProvider = ({ children }) => {
 	const { currentUser } = useContext(UserContext)
 	
 	const [products, setProducts] = useState(() => {[]})
-	const [cart, setCart] = useState(() => {
+	const [cart, setCart] = useState([])
+
+
+	useEffect(() => {
 		try{
-			return JSON.parse(localStorage.getItem('local-cart'))
+			const local_cart = JSON.parse(localStorage.getItem('local-cart'))
+			if (local_cart.length > 0) {
+				setCart(local_cart)
+			}
+			if (currentUser){
+				const userCart = async () => {
+					const newV = await fecthUserCart(currentUser)
+					setCart(newV)
+				}
+				userCart()
+			}
 		} catch (error){
-			return []
+			if (currentUser){
+				const userCart = async () => {
+					const newV = await fecthUserCart(currentUser)
+					setCart(newV)
+				}
+				userCart()
+			}
 		}
-	})
+	}, [])
+
 
 	const updateCartData = async() => {
 		if (cart === undefined || currentUser === null) {
@@ -32,7 +52,7 @@ const ShopProvider = ({ children }) => {
 		await updateUserCart(currentUser, cart)
 	}
 
-	const fetchUserCart = async () => {
+	const fetchUserCartContext = async () => {
 
 		const userCart = await fecthUserCart(currentUser)
 		const mergedCart = [...userCart];
@@ -58,11 +78,13 @@ const ShopProvider = ({ children }) => {
 		fetchProducts()
 
 		if (currentUser){
-			fetchUserCart()
+			fetchUserCartContext()
 		}
 
 		return () => {
-			fetchUserCart()
+			if (currentUser){
+				fetchUserCartContext()
+			}
 			fetchProducts()
 		}
 
