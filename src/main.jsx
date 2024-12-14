@@ -3,19 +3,20 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 
-import { UserProvider } from './context/UserContext'
 import { NotificationProvider } from './context/NotificationContext'
 import { ShopProvider } from './context/ShopContext.jsx'
 
+import { Provider as ReduxProvider } from 'react-redux'
+import { store } from './redux/store.js'
 
 createRoot(document.getElementById('root')).render(
 	<StrictMode>
-		<NotificationProvider>
-			<UserProvider>
+		<ReduxProvider store={store}>
+			<NotificationProvider>
 				<ShopProvider>
 					<App />
 				</ShopProvider>
-			</UserProvider>
-		</NotificationProvider>
+			</NotificationProvider>
+		</ReduxProvider>
 	</StrictMode>,
 )
