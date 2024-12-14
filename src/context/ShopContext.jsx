@@ -6,8 +6,7 @@ import {
 	initialState,
 	shopReducer,
 	SHOP_REDUCER_ACTIONS,
-	updateCartData as updateCartDataFunc,
-} from "./ShopReducerFunctions"
+} from "./ShopReducer"
 
 import PropTypes from 'prop-types'
 
@@ -18,123 +17,115 @@ const ShopContext = createContext({
 	setProducts: () => {},
 })
 
+const mergeCarts = (payload) => {
+	let mergedCart = []
+	if (payload.currentUserCart.length != 0) {
+		mergedCart = [...payload.currentUserCart]
+	}
+
+	console.log('payload => ', payload)
+	
+	if (payload.localCart.length > 0) {
+		payload.localCart.forEach((item) => {
+			const existingItem = mergedCart.find((cartItem) => cartItem.id === item.id)
+			if (existingItem) {
+				existingItem.quantity = (existingItem.quantity > item.quantity) ? existingItem.quantity : item.quantity
+			} else {
+				mergedCart.push(item)
+			}
+		})
+	}
+	return mergedCart
+}
+
+const fetchLocalCart = () => {
+	const localCart = localStorage.getItem('local_cart')
+	try{
+		return localCart ? JSON.parse(localCart) : []
+	} catch (error) {
+		return []
+	}
+}
+
 const ShopProvider = ({ children }) => {
 
 	const { currentUser } = useContext(UserContext)
+	const [state, dispatch] = useReducer(shopReducer, initialState)
 	
 	const [products, setProducts] = useState(() => {[]})
-	const [cart, setCart] = useState([])
-	const [ userCart, setUserCart ] = useState([])
+	const [cart, setCart] = useState(state.cart)
+	const [userCart, setUserCart] = useState([])
 
-	const [state, dispatch] = useReducer(shopReducer, initialState)
 
 	useEffect(() => {
-		if (userCart.length > 0) {
-			dispatch({
-				type: SHOP_REDUCER_ACTIONS.INITIALIZE,
-				payload: userCart
-			})
+		if (currentUser && userCart.length > 0) {
+			const LocalCart = fetchLocalCart()
+			const mergedCart = mergeCarts({ currentUserCart: userCart, localCart: LocalCart })
+			dispatch({ type: SHOP_REDUCER_ACTIONS.SET_INITIAL_CART, payload: { cart: mergedCart } })
 		}
 	}, [userCart])
 
+
 	useEffect(() => {
-		const updateStateOnServer = async () => {
-			await updateCartDataFunc(currentUser, state.cart)
+		console.log('currentUser => ', state)
+		if (currentUser && state.cart.length > 0) {
+			console.log('Updating cart data')
+			console.log('currentUser => ', currentUser.displayName, state.cart)
+			localStorage.setItem('local_cart', JSON.stringify(state.cart))
 		}
-		updateStateOnServer()
+
+		const updateCartData = async() => {
+			if (cart === undefined || currentUser === null) {
+				return;
+			}
+			await updateUserCart(currentUser, state.cart)
+		}
+
+		// Promise.allSettled(updateCartData()).then((results) => {
+		// 	results.forEach((result, index) => {
+		// 		if (result.status === 'fulfilled') {
+		// 			console.log('Cart updated')
+		// 			setCart(state.cart)
+		// 		}
+		// 	})
+		// })
+
 	}, [state])
+
+	useEffect(() => {
+		localStorage.setItem('local-cart', JSON.stringify(cart))
+	}, [cart])
+
 
 	useEffect(() => {
 
 		const fetchCurrentUserCartData = async () => {
-			const Cart = await fecthUserCart(currentUser)
-			setUserCart(Cart)
+			const fetchedCart = await fecthUserCart(currentUser)
+			Promise.allSettled(fetchedCart).then((results) => {
+				let cartList = []
+				results.forEach((result, index) => {
+					if (result.status === 'fulfilled') {
+						cartList = [...cartList, result.value]
+					}
+				})
+				setUserCart(cartList || [])
+			})
 		}
-		if (currentUser) {
-			fetchCurrentUserCartData()
+		if (currentUser){
+			console.log('Fetching user cart data')
+			fetchCurrentUserCartData();
+		} else {
+			console.log('No user found')
 		}
 
 
 		const fetchProducts = async () => {
 			const fetchedProducts = await fetchAllProducts()
+			localStorage.setItem('products', JSON.stringify(fetchedProducts))
 			setProducts(fetchedProducts)
 		}
 		fetchProducts()
-
-		try{
-			const local_cart = JSON.parse(localStorage.getItem('local-cart'))
-			if (local_cart.length > 0) {
-				setCart(local_cart)
-			}
-			if (currentUser){
-				const userCart = async () => {
-					const newV = await fecthUserCart(currentUser)
-					setCart(newV)
-				}
-				userCart()
-			}
-		} catch (error){
-			if (currentUser){
-				const userCart = async () => {
-					const newV = await fecthUserCart(currentUser)
-					setCart(newV)
-				}
-				userCart()
-			}
-		}
 	}, [])
-
-
-	const updateCartData = async() => {
-		if (cart === undefined || currentUser === null) {
-			return;
-		}
-		await updateUserCart(currentUser, cart)
-	}
-
-	const fetchUserCartContext = async () => {
-
-		const userCart = await fecthUserCart(currentUser)
-		const mergedCart = [...userCart];
-
-		if ( cart.length > 0) {
-			cart.forEach((item) => {
-				const existingItem = mergedCart.find((cartItem) => cartItem.id === item.id)
-				if (existingItem) {
-					existingItem.quantity = item.quantity
-				} else {
-					mergedCart.push(item)
-				}
-			})
-		}
-		setCart(mergedCart)
-	}
-
-	useEffect(() => {
-		if (currentUser){
-			fetchUserCartContext()
-		}
-
-		return () => {
-			if (currentUser){
-				fetchUserCartContext()
-			}
-		}
-
-	}, [currentUser])
-
-
-	useEffect(() => {
-		localStorage.setItem('local-cart', JSON.stringify(cart))
-		if (currentUser) {
-			updateCartData()
-		}
-
-		return () => {
-			updateCartData()
-		}
-
-	}, [cart])
 
 	return (
 		<ShopContext.Provider value={{ cart, setCart, products }}>
