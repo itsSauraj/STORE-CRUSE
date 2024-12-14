@@ -12,26 +12,19 @@ const Card = ({ item }) => {
 	const [isLoading, setIsLoading] = useState(true);
 
 	const { setNotification } = useContext(NotificationContext);
-	const { cart, setCart } = useContext(ShopContext);
+	const { state, dispatch, SHOP_REDUCER_ACTIONS } = useContext(ShopContext);
 
 	const handleImageLoad = () => {
 		setIsLoading(false);
 	};
 
 	const handleAddToCart = () => {
-		const updatedCart = cart || [];
-		const itemIndex = updatedCart.findIndex((cartItem) => cartItem.id === item.id);
-		if (itemIndex === -1) {
-			setCart([...updatedCart, { ...item, quantity: 1 }]);
-		} else {
-			const newCart = updatedCart.map((cartItem) => {
-				if (cartItem.id === item.id) {
-					return { ...cartItem, quantity: cartItem.quantity + 1 };
-				}
-				return cartItem;
-			});
-			setCart(newCart);
-		}
+
+		dispatch({
+			type: SHOP_REDUCER_ACTIONS.ADD_TO_CART,
+			payload: item,
+		});
+
 		setNotification({
 			message: 'Item added to cart',
 			status: 'success',

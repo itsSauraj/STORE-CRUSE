@@ -84,20 +84,22 @@ const Navbar = () => {
 							className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary'
 						/>
 					) : (
-						<PaperButton
-							value='LOGOUT'
-							onClick={() => handleLogout()}
-							className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary'
-						/>
+						<>
+							<PaperButton
+								value='LOGOUT'
+								onClick={() => handleLogout()}
+								className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary'
+							/>
+							<BagIcon
+								onClickHandler={() => toggleDropdown()}
+								ref = {(el) => (cartIconRef.current[0] = el)}
+								width={70} 
+								height={40}
+								strokeColor='stroke-primary dark:stroke-secondary'
+								textColor='fill-primary dark:fill-secondary'
+							/>
+						</>
 					)}
-					<BagIcon
-						onClickHandler={() => toggleDropdown()}
-						ref = {(el) => (cartIconRef.current[0] = el)}
-						width={70} 
-						height={40}
-						strokeColor='stroke-primary dark:stroke-secondary'
-						textColor='fill-primary dark:fill-secondary'
-					/>
 				</nav>
 				
 				<div className='flex gap-2 items-center md:hidden'>

@@ -5,10 +5,10 @@ import PropTypes from "prop-types";
 
 const BagIcon = forwardRef(({ width=1024, height=1024, fill="none", strokeColor="stroke-primary dark:stroke-secondary", textColor="fill-primary dark:fill-secondary" , count=0, onClickHandler }, ref) => {
 	
-	const { cart } = useContext(ShopContext);
+	const { state } = useContext(ShopContext);
 
-	if (cart) {
-		count = cart.reduce((acc, item) => acc + item.quantity, 0);
+	if (state.cart) {
+		count = state.cart.reduce((acc, item) => acc + item.quantity, 0);
 	}
 
 	return (

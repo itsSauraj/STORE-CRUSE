@@ -9,35 +9,28 @@ import PropTypes from 'prop-types'
 
 const CartItem = ({ item }) => {
 
-	const { setCart } = useContext(ShopContext)
+	const { dispatch, SHOP_REDUCER_ACTIONS } = useContext(ShopContext)
 	const { setNotification } = useContext(NotificationContext)
 
 	const handleQuantity = (type) => {
 		if (type === 'inc') {
-			setCart((prev) => prev.map((cartItem) => {
-				if (cartItem.id === item.id) {
-					return { ...cartItem, quantity: cartItem.quantity + 1 }
-				}
-				return cartItem
-			}))
+			dispatch({
+				type: SHOP_REDUCER_ACTIONS.INCREASE_QUANTITY,
+				payload: item
+			})
 		} else {
-			setCart((prev) => prev.reduce((acc, cartItem) => {
-				if (cartItem.id === item.id) {
-					const newQuantity = cartItem.quantity - 1;
-					if (newQuantity > 0) {
-						acc.push({ ...cartItem, quantity: newQuantity });
-					}
-				} else {
-					acc.push(cartItem);
-				}
-				return acc;
-			}, []))
+			dispatch({
+				type: SHOP_REDUCER_ACTIONS.DECREASE_QUANTITY,
+				payload: item
+			})
 		}
 	}
 
-
 	const handleRemove = () => {
-		setCart((prev) => prev.filter((cartItem) => cartItem.id !== item.id))
+		dispatch({
+			type: SHOP_REDUCER_ACTIONS.REMOVE_FROM_CART,
+			payload: item
+		})
 		setNotification({
 			message: `${item.title} removed from cart`,
 			status: 'success'

@@ -10,11 +10,16 @@ import PaperButton from '../utilities/PaperButton'
 
 const CartList = () => {
 
-	const { cart, setCart } = useContext(ShopContext)
+	const { state, dispatch, SHOP_REDUCER_ACTIONS } = useContext(ShopContext)
 	const { setNotification } = useContext(NotificationContext)
 
 	const handelClearCart = () => {
-		setCart([])
+		
+		dispatch({
+			type: SHOP_REDUCER_ACTIONS.CLEAR_CART,
+			payload: []
+		})
+
 		setNotification({
 			message: 'Cart Cleared',
 			status: 'success'
@@ -22,14 +27,14 @@ const CartList = () => {
 	}
 
 	const total = {
-		price: cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
-		quantity: cart.reduce((acc, item) => acc + item.quantity, 0),
+		price: state.cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
+		quantity: state.cart.reduce((acc, item) => acc + item.quantity, 0),
 	}
 
 	return (
 		<div className='w-full md:w-[70%] lg:w-[50%]'>
 			<hr className='bg-primary dark:bg-secondary h-[2px] mt-3'/>
-			{cart.map((item) => (
+			{state.cart.map((item) => (
 				<Fragment key={item.id}>
 					<CartItem item={item}/>
 					<hr className='bg-primary dark:bg-secondary h-[2px]'/>
