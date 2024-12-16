@@ -6,7 +6,7 @@ const USER_INITIAL_STATE = {
 }
 
 
-export const userReducer = (state = USER_INITIAL_STATE, action = {}) => {
+export const userReducer = (state = USER_INITIAL_STATE, action) => {
 	switch (action.type) {
 	case USER_ACTIONS_TYPES.SET_USER:
 		return {

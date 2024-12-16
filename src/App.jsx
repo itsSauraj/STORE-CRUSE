@@ -84,7 +84,7 @@ function App() {
 			}
 			dispatch(setCurrentUser(user))
 		})
-
+		console.log(unsubscribe);
 		return () => unsubscribe()
 	},[])
 

@@ -9,9 +9,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import PaperButton from './utilities/PaperButton'
 
-import { UserContext } from '../context/UserContext'
 import { NotificationContext } from '../context/NotificationContext'
-import { LogOutUser } from '../firebase/filrebase.utils'
+import { LogOutUser } from '../firebase/filrebase.utils'	
+import { setCurrentUser } from '../redux/slices/user/user.action'
+
+import { useSelector, useDispatch } from 'react-redux'
 
 import DropDownCart from '../components/shop/DropDownCart'
 
@@ -26,7 +28,10 @@ const navLinks = [
 
 const Navbar = () => {
 
-	const { currentUser, setCurrentUser } = useContext(UserContext)
+
+	const dispatch = useDispatch()
+	const currentUser = useSelector(state => state.user.currentUser)
+
 	const { setNotification } = useContext(NotificationContext)
 
 	const [nav, setNav] = useState(false)
@@ -46,7 +51,7 @@ const Navbar = () => {
 	}, [location])
 
 	const handleLogout = async () => {
-		setCurrentUser(null)
+		dispatch(setCurrentUser(null))
 		await LogOutUser()
 		setNotification({
 			message: 'User Logged Out',
