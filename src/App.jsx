@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 
 import { useEffect, useContext } from "react"
-import { AuthStateChanged, createUserProfileDocument } from "./firebase/filrebase.utils"
+import { AuthStateChanged, createUserProfileDocumentOrGetProfile } from "./firebase/filrebase.utils"
 
 import { useDispatch } from "react-redux";
 import { setUser } from "./redux/slices/user.slice";
@@ -75,14 +75,27 @@ function App() {
 	useEffect(() => {
 		const unsubscribe = AuthStateChanged((user) => {
 			if (user) {
-				const userProfile = createUserProfileDocument(user)
-				if (userProfile.error) {
+				const userProfile = createUserProfileDocumentOrGetProfile(user)
+				Promise.all([userProfile]).then((data) => {
+					const userProfileData = data[0]
+					const pickedUserData = (user) => {
+						return {
+							uid: user.uid,
+							displayName: user.displayName,
+							email: user.email,
+							photoURL: user.photoURL,
+							phoneNumber: user.phoneNumber,
+							emailVerified: user.emailVerified,
+							...userProfileData,
+						}
+					}
+					dispatch(setUser(pickedUserData(user)))
+				}).catch((error) => {
 					setNotification({
 						message: 'Something went wrong',
 						status: 'error'
 					})
-				}
-				dispatch(setUser(user))
+				})
 				dispatch(setInitialCart(user))
 			}
 		})

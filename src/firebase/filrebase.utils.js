@@ -52,7 +52,7 @@ const signInWithEmailPassword = (email, password) => {
 
 const db = getFirestore(firebaseApp);
 
-const createUserProfileDocument = async (userAuth, additionalData) => {
+const createUserProfileDocumentOrGetProfile = async (userAuth, additionalData) => {
 	if (!userAuth) return;
 
 	const userRef = doc(db, "users", userAuth.uid);
@@ -71,6 +71,7 @@ const createUserProfileDocument = async (userAuth, additionalData) => {
 				email,
 				createdAt,
 				passwordSet,
+				cart: [],
 			});
 			sendEmailVerification(userAuth);
 		} catch (error) {
@@ -78,7 +79,7 @@ const createUserProfileDocument = async (userAuth, additionalData) => {
 		}
 	}
 
-	return userRef;
+	return snapShot.data();
 }
 
 const CreateCustomUser = async (formData) => {
@@ -120,11 +121,10 @@ export {
 	signInWithGooglePopup,
 	LogOutUser,
 	signInWithEmailPassword,
-	createUserProfileDocument,
+	createUserProfileDocumentOrGetProfile,
 	CreateCustomUser,
 	checkIfUserPasswordSet,
 	AuthStateChanged,
 	sendPasswordResetEmailToUser,
-
 	db,
 }

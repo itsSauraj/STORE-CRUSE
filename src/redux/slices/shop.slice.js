@@ -62,18 +62,25 @@ export function setInitialProductsAsync(){
 }
 
 export function setInitialCart(currentUser){
+	
 	return async (dispatch, getState) => {
-
+		
 		dispatch(shopSlice.actions.setIsCartLoading(true));
 
 		try{
 			const cart = await fecthUserCart(currentUser);
 			dispatch(shopSlice.actions.setCart(cart));
 			dispatch(shopSlice.actions.setIsCartLoading(false));
+
+			console.log("Cart loaded successfully");
+
 		} catch (error) {
-			dispatch(shopSlice.actions.setIsCartLoading(false));
+			console.error("Error fetching user cart: ", error);
 			dispatch(shopSlice.actions.setErrorLoadingCart(true));
+			dispatch(shopSlice.actions.setIsCartLoading(false));
 		}
+
+		console.log("Cart loaded successfully no error occured");
 	}	
 }
 

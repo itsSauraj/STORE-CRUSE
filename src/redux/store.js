@@ -15,16 +15,15 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+let middlewares = [!inProduction && logger].filter(Boolean);
+middlewares = []
+
 export const store = configureStore({
 	reducer: persistedReducer,
 	middleware: (getDefaultMiddleware) => {
-		return getDefaultMiddleware(
-			{
-				serializableCheck: false,
-			}
-		).concat(
-			[!inProduction && logger].filter(Boolean)
-		);
+		return getDefaultMiddleware({
+			serializableCheck: false,
+		}).concat(middlewares);
 	},
 });
 
