@@ -1,19 +1,25 @@
 import React, { useContext, Fragment } from 'react'
 
+
 import { NotificationContext } from '../../context/NotificationContext'
 
 import CartItem from './CartItem'
 
 import PaperButton from '../utilities/PaperButton'
+
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCart } from '../../redux/slices/shop.slice'
 
+import errorProductsImg from "../../assets/images/error-loading.png";
+import loadingImg from "../../assets/gifs/loading.gif";
+import emptyCartPNG from '../../assets/images/empty-cart.png';
+
 
 const CartList = () => {
-	const { cart } = useSelector(state => state.shop)
-	const dispatch = useDispatch()
 
 	const { setNotification } = useContext(NotificationContext)
+	const dispatch = useDispatch()
+	const { cart, isCartLoading, errorLoadingCart } = useSelector((state) => state.shop)
 
 	const handelClearCart = () => {
 		dispatch(clearCart())
@@ -29,36 +35,56 @@ const CartList = () => {
 	}
 
 	return (
-		<div className='w-full md:w-[70%] lg:w-[50%]'>
-			<hr className='bg-primary dark:bg-secondary h-[2px] mt-3'/>
-			{cart.map((item) => (
-				<Fragment key={item.id}>
-					<CartItem item={item}/>
-					<hr className='bg-primary dark:bg-secondary h-[2px]'/>
-				</Fragment>
-			))}
-			<div className='flex p-7 gap-4 justify-end'>	
-				<PaperButton 
-					value='Clear Cart'
-					className="
+		<>
+			{isCartLoading &&
+				<div className="w-full flex items-center justify-center ">
+					<img src={loadingImg} alt="Loading Products" className="invert mix-blend-multiply opacity-20" />
+				</div>
+			}
+			{!isCartLoading && errorLoadingCart && 
+				<div className="w-full flex items-center justify-center ">
+					<img src={errorProductsImg} alt="Error ProductsImg" />
+				</div>
+			}
+			{!isCartLoading && !errorLoadingCart && cart.length === 0 &&
+				<div className="w-full flex items-center justify-center ">
+					<img src={emptyCartPNG} alt="No Products" className='w-[512px]'/>
+				</div>
+			}
+
+			{!isCartLoading && cart.length > 0 &&
+				<div className='w-full md:w-[70%] lg:w-[50%]'>
+					<hr className='bg-primary dark:bg-secondary h-[2px] mt-3' />
+					{cart.map((item) => (
+						<Fragment key={item.id}>
+							<CartItem item={item} />
+							<hr className='bg-primary dark:bg-secondary h-[2px]' />
+						</Fragment>
+					))}
+					<div className='flex p-7 gap-4 justify-end'>
+						<PaperButton
+							value='Clear Cart'
+							className="
 						dark:border-primary border-secondary
 						bg-primary dark:bg-secondary
 						text-secondary dark:text-primary
 						p-3 w-[160px]
 					"
-					onClick={handelClearCart}
-				/>
-				<PaperButton 
-					className="
+							onClick={handelClearCart}
+						/>
+						<PaperButton
+							className="
 						dark:border-primary border-secondary
 						bg-primary dark:bg-secondary
 						text-secondary dark:text-primary
 						p-3 w-[160px]
 					"
-					value={`Checkout - ₹${total.price}`}
-				/>
-			</div>
-		</div>
+							value={`Checkout - ₹${total.price}`}
+						/>
+					</div>
+				</div>
+			}
+		</>
 	)
 }
 

@@ -4,20 +4,24 @@ import Card from "../../components/shop/Card";
 import FilterContainer from "../../components/shop/FiltersContaier";
 import { useSelector } from "react-redux";
 
+import errorProductsImg from "../../assets/images/error-loading.png";
+import noProductsImg from "../../assets/images/no-products.png";
+import loadingImg from "../../assets/gifs/loading.gif";
+
 const filters = [
 	"mens",
 	"womens",
-	"shirt",
+	"shirts",
 	"trousers",
 	"hoodie",
 	"unisex",
 	"hats",
-	"kurti",
+	"kurti",	
 ];
 
 const ShopPage = () => {
 
-	const { products } = useSelector(state => state.shop)
+	const { products, isProductLoading, errorLoadingProducts } = useSelector(state => state.shop)
 	const [filteredData, setFilteredData] = useState(products);
 
 	return (
@@ -26,6 +30,11 @@ const ShopPage = () => {
 			{products &&
 				<FilterContainer filters={filters} originalData={products} setFilteredData={setFilteredData} />
 			}
+			<div className="w-full flex items-center justify-center ">
+				{isProductLoading && <img src={loadingImg} alt="Loading Products" className="invert mix-blend-multiply opacity-20"/> }
+				{!isProductLoading && errorLoadingProducts && <img src={errorProductsImg} alt="Error ProductsImg"/> }
+				{!isProductLoading && filteredData.length === 0 && <img src={noProductsImg} alt="No Products"/> }
+			</div>
 			
 			{filteredData ? (
 				<>

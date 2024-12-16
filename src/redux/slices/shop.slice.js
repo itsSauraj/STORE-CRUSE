@@ -1,10 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 
 import { fetchAllProducts, fecthUserCart, updateUserCart } from "../../firebase/shop.utils"
 
 const initialState = {
 	cart: [],
 	products: [],
+	isProductLoading: false,
+	errorLoadingProducts: false,
+	isCartLoading: false,
+	errorLoadingCart: false,
 };
 
 const shopSlice = createSlice({
@@ -23,17 +28,37 @@ const shopSlice = createSlice({
 		clearCart: (state) => {
 			state.cart = [];
 		},
+		setIsCartLoading: (state, action) => {
+			state.isCartLoading = action.payload;
+		},
+		setIsProductLoading: (state, action) => {
+			state.isProductLoading = action.payload;
+		},
+		setErrorLoadingProducts: (state, action) => {
+			state.errorLoadingProducts = action.payload;
+		},
+		setErrorLoadingCart: (state, action) => {
+			state.errorLoadingCart = action.payload;
+		}
 	},
 });
 
 export default shopSlice.reducer;
 
 
-export function setInitialProducts(){
+export function setInitialProductsAsync(){
 	return async (dispatch, getState) => {
-		const products = await fetchAllProducts();
-		dispatch(shopSlice.actions.setProducts(products));
-	}	
+
+		dispatch(shopSlice.actions.setIsProductLoading(true));
+		try {
+			const products = await fetchAllProducts();
+			dispatch(shopSlice.actions.setProducts(products));
+			dispatch(shopSlice.actions.setIsProductLoading(false));
+		} catch (error) {
+			dispatch(shopSlice.actions.setErrorLoadingProducts(true));
+			dispatch(shopSlice.actions.setIsProductLoading(false));
+		}
+	}
 }
 
 export function setInitialCart(currentUser){
@@ -41,6 +66,17 @@ export function setInitialCart(currentUser){
 		const cart = await fecthUserCart(currentUser);
 		dispatch(shopSlice.actions.setCart(cart));	
 	}	
+}
+
+
+export async function fetchProducts(){
+	
+	return async (dispatch, getState) => {
+		dispatch(shopSlice.actions.setIsProductLoading(true));
+		const products = await fetchAllProducts();
+		dispatch(shopSlice.actions.setProducts(products));
+		dispatch(shopSlice.actions.setIsProductLoading(false));
+	}
 }
 
 export function addProductToCart(product){

@@ -6,13 +6,17 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import DropDownCard from './DropDownCard';
+
 import emptyCartPNG from '../../assets/images/empty-cart.png';
+import errorProductsImg from '../../assets/images/error-loading.png';
+import loadingImg from '../../assets/gifs/loading.gif';
+
 import { useSelector } from 'react-redux';
 
 const DropDownCart = ({ isOpen, setIsOpen }) => {
 
 	const dropdownRef = useRef(null);
-	const { cart } = useSelector(state => state.shop)
+	const { cart, isCartLoading, errorLoadingCart } = useSelector(state => state.shop)
 
 	const handleClickOutside = (event) => {
 		if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -28,6 +32,7 @@ const DropDownCart = ({ isOpen, setIsOpen }) => {
 	}, []);
 
 	return (
+
 		<>
 			{isOpen && (
 				<motion.div
@@ -53,7 +58,13 @@ const DropDownCart = ({ isOpen, setIsOpen }) => {
 							</div>
 						</div>
 					)}
-					{cart.length == 0 && (
+
+					<div className="w-full flex items-center justify-center ">
+						{isCartLoading && <img src={loadingImg} alt="Loading Products" className="invert mix-blend-multiply opacity-20"/> }
+						{!isCartLoading && errorLoadingCart && <img src={errorProductsImg} alt="Error ProductsImg"/> }
+					</div>
+
+					{cart.length == 0 && !isCartLoading && (
 						<div className='flex p-3 flex-col gap-3'>
 							<div className='flex z-50  sticky top-0  bg-primary dark:bg-secondary text-secondary dark:text-primary w-[100%] justify-between p-3
 								border-[1px] border-secondary dark:border-primary

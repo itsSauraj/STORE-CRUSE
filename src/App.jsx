@@ -6,7 +6,7 @@ import { AuthStateChanged, createUserProfileDocument } from "./firebase/filrebas
 
 import { useDispatch } from "react-redux";
 import { setUser } from "./redux/slices/user.slice";
-import { setInitialProducts, setInitialCart } from "./redux/slices/shop.slice";
+import { setInitialCart, setInitialProductsAsync } from "./redux/slices/shop.slice";
 
 // Importing Layout Components
 import Default from './layouts/Default'
@@ -86,7 +86,7 @@ function App() {
 				dispatch(setInitialCart(user))
 			}
 		})
-		dispatch(setInitialProducts())
+		dispatch(setInitialProductsAsync())
 		return () => unsubscribe()
 	},[dispatch])
 

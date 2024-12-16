@@ -5,6 +5,8 @@ import storage from "redux-persist/lib/storage";
 import { rootReducer } from "./rootReducer";
 import logger from "redux-logger";
 
+const inProduction = import.meta.env.VITE_APP_ENV === 'production' ? true : false;
+
 const persistConfig = {
 	key: 'root',
 	storage: storage,
@@ -20,7 +22,9 @@ export const store = configureStore({
 			{
 				serializableCheck: false,
 			}
-		).concat(logger);
+		).concat(
+			[!inProduction && logger].filter(Boolean)
+		);
 	},
 });
 

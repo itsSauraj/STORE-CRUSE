@@ -2,6 +2,7 @@ import React from 'react'
 
 import CartList from '../../components/shop/CartList'
 
+
 const Checkout = () => {
 	return (
 		<>
