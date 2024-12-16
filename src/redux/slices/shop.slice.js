@@ -63,8 +63,17 @@ export function setInitialProductsAsync(){
 
 export function setInitialCart(currentUser){
 	return async (dispatch, getState) => {
-		const cart = await fecthUserCart(currentUser);
-		dispatch(shopSlice.actions.setCart(cart));	
+
+		dispatch(shopSlice.actions.setIsCartLoading(true));
+
+		try{
+			const cart = await fecthUserCart(currentUser);
+			dispatch(shopSlice.actions.setCart(cart));
+			dispatch(shopSlice.actions.setIsCartLoading(false));
+		} catch (error) {
+			dispatch(shopSlice.actions.setIsCartLoading(false));
+			dispatch(shopSlice.actions.setErrorLoadingCart(true));
+		}
 	}	
 }
 
