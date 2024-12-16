@@ -13,7 +13,7 @@ const appSlice = createSlice({
 		},
 		setThemeDark: (state, action) => {
 			state.theme = 'dark';
-		}
+		},
 	},
 });
 

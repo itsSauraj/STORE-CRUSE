@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
-import { fetchAllProducts, fecthUserCart, updateUserCart } from "../../firebase/shop.utils"
+import { fetchAllProducts, fecthUserCart, updateUserCart } from "../../utils/firebase/shop.utils"
 
 const initialState = {
 	cart: [],
@@ -71,16 +71,11 @@ export function setInitialCart(currentUser){
 			const cart = await fecthUserCart(currentUser);
 			dispatch(shopSlice.actions.setCart(cart));
 			dispatch(shopSlice.actions.setIsCartLoading(false));
-
-			console.log("Cart loaded successfully");
-
 		} catch (error) {
 			console.error("Error fetching user cart: ", error);
 			dispatch(shopSlice.actions.setErrorLoadingCart(true));
 			dispatch(shopSlice.actions.setIsCartLoading(false));
 		}
-
-		console.log("Cart loaded successfully no error occured");
 	}	
 }
 

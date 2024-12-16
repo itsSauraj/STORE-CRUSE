@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 
 import { useEffect, useContext } from "react"
-import { AuthStateChanged, createUserProfileDocumentOrGetProfile } from "./firebase/filrebase.utils"
+import { AuthStateChanged, createUserProfileDocumentOrGetProfile } from "./utils/firebase/filrebase.utils"
 
 import { useDispatch } from "react-redux";
 import { setUser } from "./redux/slices/user.slice";

@@ -61,6 +61,7 @@ const NotificationProvider = ({ children }) => {
 						/>}
 				</AnimatePresence>
 			}
+
 			{children}
 		</NotificationContext.Provider>
 	)

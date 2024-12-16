@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import PaperButton from './utilities/PaperButton'
 
 import { NotificationContext } from '../context/NotificationContext'
-import { LogOutUser } from '../firebase/filrebase.utils'	 
+import { LogOutUser } from '../utils/firebase/filrebase.utils'	 
 import { logoutUser } from '../redux/slices/user.slice'
 
 import { useSelector, useDispatch } from 'react-redux'

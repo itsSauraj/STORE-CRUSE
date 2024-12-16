@@ -7,7 +7,7 @@ import CartItem from './CartItem'
 
 import PaperButton from '../utilities/PaperButton'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { clearCart } from '../../redux/slices/shop.slice'
 
 import errorProductsImg from "../../assets/images/error-loading.png";
@@ -15,11 +15,13 @@ import loadingImg from "../../assets/gifs/loading.gif";
 import emptyCartPNG from '../../assets/images/empty-cart.png';
 
 
-const CartList = () => {
+import PropTypes from 'prop-types'
+
+
+const CartList = ({setShowModal, cart, isCartLoading, errorLoadingCart}) => {
 
 	const { setNotification } = useContext(NotificationContext)
 	const dispatch = useDispatch()
-	const { cart, isCartLoading, errorLoadingCart } = useSelector((state) => state.shop)
 
 	const handelClearCart = () => {
 		dispatch(clearCart())
@@ -80,12 +82,20 @@ const CartList = () => {
 						p-3 w-[160px]
 					"
 							value={`Checkout - ₹${total.price}`}
+							onClick={() => setShowModal(true)}
 						/>
 					</div>
 				</div>
 			}
 		</>
 	)
+}
+
+CartList.propTypes = {
+	setShowModal: PropTypes.func,
+	cart: PropTypes.array,
+	isCartLoading: PropTypes.bool,
+	errorLoadingCart: PropTypes.bool,
 }
 
 export default CartList

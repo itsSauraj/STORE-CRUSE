@@ -3,7 +3,7 @@ import { useState, useContext } from 'react'
 import PaperTextBox from '../../components/utilities/PaperTextBox'
 import PaperButton from '../../components/utilities/PaperButton'
 
-import { sendPasswordResetEmailToUser } from '../../firebase/filrebase.utils'
+import { sendPasswordResetEmailToUser } from '../../utils/firebase/filrebase.utils'
 import { Link } from 'react-router-dom'
 
 import { NotificationContext } from "../../context/NotificationContext"

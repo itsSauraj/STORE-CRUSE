@@ -3,7 +3,7 @@ import { useEffect, useState, useContext } from 'react'
 import PaperTextBox from '../../components/utilities/PaperTextBox'
 import PaperButton from '../../components/utilities/PaperButton'
 
-import { signInWithGooglePopup, CreateCustomUser } from '../../firebase/filrebase.utils'
+import { signInWithGooglePopup, CreateCustomUser } from '../../utils/firebase/filrebase.utils'
 import { Link, useNavigate } from 'react-router-dom'
 import { NotificationContext } from "../../context/NotificationContext"
 
