@@ -1,15 +1,15 @@
-import React, { useContext, forwardRef } from "react";
-import { ShopContext } from "../../context/ShopContext";
+import React, { forwardRef } from "react";
 
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 const BagIcon = forwardRef(({ width=1024, height=1024, fill="none", strokeColor="stroke-primary dark:stroke-secondary", textColor="fill-primary dark:fill-secondary" , count=0, onClickHandler }, ref) => {
 	
-	const { state } = useContext(ShopContext);
-
-	if (state.cart) {
-		count = state.cart.reduce((acc, item) => acc + item.quantity, 0);
+	const { cart } = useSelector(state => state.shop);
+	if (cart.length > 0) {
+		count = cart.reduce((acc, item) => acc + item.quantity, 0);
 	}
+
 
 	return (
 		<svg

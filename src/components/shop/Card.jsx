@@ -6,25 +6,23 @@ import PaperButton from '../utilities/PaperButton';
 import PropTypes from 'prop-types';
 
 import { NotificationContext } from '../../context/NotificationContext';
-import { ShopContext } from '../../context/ShopContext';
+
+import { useDispatch } from 'react-redux';
+import { addProductToCart } from '../../redux/slices/shop.slice';
 
 const Card = ({ item }) => {
 	const [isLoading, setIsLoading] = useState(true);
 
 	const { setNotification } = useContext(NotificationContext);
-	const { state, dispatch, SHOP_REDUCER_ACTIONS } = useContext(ShopContext);
 
 	const handleImageLoad = () => {
 		setIsLoading(false);
 	};
 
+	const dispatch = useDispatch();
+
 	const handleAddToCart = () => {
-
-		dispatch({
-			type: SHOP_REDUCER_ACTIONS.ADD_TO_CART,
-			payload: item,
-		});
-
+		dispatch(addProductToCart(item));
 		setNotification({
 			message: 'Item added to cart',
 			status: 'success',

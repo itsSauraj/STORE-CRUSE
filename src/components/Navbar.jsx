@@ -10,8 +10,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import PaperButton from './utilities/PaperButton'
 
 import { NotificationContext } from '../context/NotificationContext'
-import { LogOutUser } from '../firebase/filrebase.utils'	
-import { setCurrentUser } from '../redux/slices/user/user.action'
+import { LogOutUser } from '../firebase/filrebase.utils'	 
+import { logoutUser } from '../redux/slices/user.slice'
 
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -51,7 +51,11 @@ const Navbar = () => {
 	}, [location])
 
 	const handleLogout = async () => {
-		dispatch(setCurrentUser(null))
+		dispatch(logoutUser(null))
+		dispatch({
+			type: 'SET_USER',
+			payload: null
+		})
 		await LogOutUser()
 		setNotification({
 			message: 'User Logged Out',

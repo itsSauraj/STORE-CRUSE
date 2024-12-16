@@ -5,7 +5,8 @@ import { useEffect, useContext } from "react"
 import { AuthStateChanged, createUserProfileDocument } from "./firebase/filrebase.utils"
 
 import { useDispatch } from "react-redux";
-import { setCurrentUser } from "./redux/slices/user/user.action"
+import { setUser } from "./redux/slices/user.slice";
+import { setInitialProducts, setInitialCart } from "./redux/slices/shop.slice";
 
 // Importing Layout Components
 import Default from './layouts/Default'
@@ -81,12 +82,13 @@ function App() {
 						status: 'error'
 					})
 				}
+				dispatch(setUser(user))
+				dispatch(setInitialCart(user))
 			}
-			dispatch(setCurrentUser(user))
 		})
-		console.log(unsubscribe);
+		dispatch(setInitialProducts())
 		return () => unsubscribe()
-	},[])
+	},[dispatch])
 
 	return (
 		<AnimatePresence mode="wait">

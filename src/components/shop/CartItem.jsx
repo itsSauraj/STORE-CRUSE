@@ -2,35 +2,28 @@ import React, { useContext } from 'react'
 import { FaXmark} from "react-icons/fa6";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 
-import { ShopContext } from '../../context/ShopContext'
 import { NotificationContext } from '../../context/NotificationContext';
+
+import { useDispatch } from 'react-redux';
+import { increaseQuantity, decreaseQuantity, removeProductFromCart } from '../../redux/slices/shop.slice'
 
 import PropTypes from 'prop-types'
 
 const CartItem = ({ item }) => {
 
-	const { dispatch, SHOP_REDUCER_ACTIONS } = useContext(ShopContext)
+	const dispatch = useDispatch()
 	const { setNotification } = useContext(NotificationContext)
 
 	const handleQuantity = (type) => {
 		if (type === 'inc') {
-			dispatch({
-				type: SHOP_REDUCER_ACTIONS.INCREASE_QUANTITY,
-				payload: item
-			})
+			dispatch(increaseQuantity(item))
 		} else {
-			dispatch({
-				type: SHOP_REDUCER_ACTIONS.DECREASE_QUANTITY,
-				payload: item
-			})
+			dispatch(decreaseQuantity(item))
 		}
 	}
 
 	const handleRemove = () => {
-		dispatch({
-			type: SHOP_REDUCER_ACTIONS.REMOVE_FROM_CART,
-			payload: item
-		})
+		dispatch(removeProductFromCart(item))
 		setNotification({
 			message: `${item.title} removed from cart`,
 			status: 'success'

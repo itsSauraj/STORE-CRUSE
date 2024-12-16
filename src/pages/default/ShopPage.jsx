@@ -1,10 +1,8 @@
-import { useState, useContext } from "react";
-
-import { ShopContext } from "../../context/ShopContext";
-
+import { useState } from "react";
 import Card from "../../components/shop/Card";
 
 import FilterContainer from "../../components/shop/FiltersContaier";
+import { useSelector } from "react-redux";
 
 const filters = [
 	"mens",
@@ -19,7 +17,7 @@ const filters = [
 
 const ShopPage = () => {
 
-	const { products } = useContext(ShopContext)
+	const { products } = useSelector(state => state.shop)
 	const [filteredData, setFilteredData] = useState(products);
 
 	return (

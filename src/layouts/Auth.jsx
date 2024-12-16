@@ -30,9 +30,6 @@ const Auth = () => {
 			setReload(false)
 		}, 1000)
 
-		return () => {
-			setReload
-		}
 	}, [location])
 
 	return (
