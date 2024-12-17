@@ -28,7 +28,7 @@ const DropDownCard = ({ item }) => {
 			</div>
 			<div className='flex justify-between flex-col'>
 				<h4 className='truncate w-full'>{item.title}</h4>
-				<span>₹{item.price} x {item.quantity} = ₹{item.price*item.quantity}</span>
+				<span>${item.price} x {item.quantity} = ${item.price*item.quantity}</span>
 			</div>
 		</motion.div>
 	)

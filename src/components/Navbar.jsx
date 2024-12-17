@@ -112,14 +112,16 @@ const Navbar = () => {
 				</nav>
 				
 				<div className='flex gap-2 items-center md:hidden'>
-					<BagIcon
-						onClickHandler={() => toggleDropdown()}
-						ref = {(el) => (cartIconRef.current[1] = el)}	
-						width={25} 
-						height={25}
-						strokeColor='stroke-primary dark:stroke-secondary'
-						textColor='fill-primary dark:fill-secondary'
-					/>
+					{currentUser && (
+						<BagIcon
+							onClickHandler={() => toggleDropdown()}
+							ref = {(el) => (cartIconRef.current[1] = el)}	
+							width={25} 
+							height={25}
+							strokeColor='stroke-primary dark:stroke-secondary'
+							textColor='fill-primary dark:fill-secondary'
+						/>
+					)}
 					<motion.div
 						onClick={handleNav}
 						whileTap={{ scale: 0.9 }}

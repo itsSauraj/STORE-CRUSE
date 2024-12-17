@@ -48,7 +48,7 @@ const Card = ({ item }) => {
 				/>
 				<div className='flex justify-between'>
 					<h4 className='truncate w-[80%]'>{item.title}</h4>
-					<span>₹ {item.price}</span>
+					<span>$ {item.price}</span>
 				</div>
 				<div className='flex gap-4 justify-between items-bottom flex-grow w-full relative'>
 					<PaperButton value='Add to Cart' className='border-secondary dark:border-primary' onClick={handleAddToCart}/>

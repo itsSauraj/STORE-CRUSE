@@ -32,7 +32,7 @@ const Checkout = () => {
 			<PaperModal 
 				showModal={showModal} 
 				setShowModal={setShowModal} 
-				child={<CheckOutModal />}
+				child={<CheckOutModal total_amount={total.price}/>}
 			/>
 		</>
 	)

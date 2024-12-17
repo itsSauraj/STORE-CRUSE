@@ -46,7 +46,7 @@ const CartItem = ({ item }) => {
 							onClick={() => handleQuantity('inc')}
 						/>
 					</div>
-					<div className='text-center'>₹{item.price * item.quantity}</div>
+					<div className='text-center'>${item.price * item.quantity}</div>
 					<div className='flex justify-end items-center'>
 						<FaXmark className='cursor-pointer'
 							onClick={handleRemove}

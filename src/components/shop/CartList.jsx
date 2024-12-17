@@ -81,7 +81,7 @@ const CartList = ({setShowModal, cart, isCartLoading, errorLoadingCart}) => {
 						text-secondary dark:text-primary
 						p-3 w-[160px]
 					"
-							value={`Checkout - ₹${total.price}`}
+							value={`Checkout - $${total.price}`}
 							onClick={() => setShowModal(true)}
 						/>
 					</div>
