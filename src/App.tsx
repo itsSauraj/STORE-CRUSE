@@ -26,7 +26,7 @@ import { AnimatePresence } from "motion/react";
 import { NotificationContext } from "./context/NotificationContext";
 
 
-import { TypeUserProfile } from "./types/user";
+import { UserProfileInterface } from "./types/user.interface";
 
 
 const BrowserRouter = createBrowserRouter([
@@ -76,12 +76,12 @@ function App() {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		const unsubscribe = AuthStateChanged((user : TypeUserProfile) => {
+		const unsubscribe = AuthStateChanged((user : UserProfileInterface) => {
 			if (user) {
 				const userProfile = createUserProfileDocumentOrGetProfile(user)
 				Promise.all([userProfile]).then((data) => {
 					const userProfileData = data[0]
-					const pickedUserData = (user : TypeUserProfile) => {
+					const pickedUserData = (user : UserProfileInterface) => {
 						return {
 							uid: user.uid,
 							displayName: user.displayName,

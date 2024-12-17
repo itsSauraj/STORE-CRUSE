@@ -3,9 +3,9 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import { rootReducer } from "./rootReducer";
-import logger from "redux-logger";
 
-const inProduction = import.meta.env.VITE_APP_ENV === 'production' ? true : false;
+const environment: String = import.meta.env.VITE_APP_ENV;
+const inProduction: boolean = environment === 'production' ? true : false;
 
 const persistConfig = {
 	key: 'root',
@@ -15,8 +15,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-let middlewares = [!inProduction && logger].filter(Boolean);
-middlewares = []
+let middlewares: any[] = []
 
 export const store = configureStore({
 	reducer: persistedReducer,
@@ -28,4 +27,6 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+
+export type AppDispatch = typeof store.dispatch;
 

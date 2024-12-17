@@ -3,7 +3,9 @@ import { useDispatch } from 'react-redux';
 
 import { fetchAllProducts, fecthUserCart, updateUserCart } from "../../utils/firebase/shop.utils"
 
-const initialState = {
+import { ProductInterface, CartInterface, ShopState } from '../../types/shop.interface';
+
+const initialState: ShopState = {
 	cart: [],
 	products: [],
 	isProductLoading: false,
@@ -47,7 +49,7 @@ export default shopSlice.reducer;
 
 
 export function setInitialProductsAsync(){
-	return async (dispatch, getState) => {
+	return async (dispatch: any, getState: any) => {
 
 		dispatch(shopSlice.actions.setIsProductLoading(true));
 		try {
@@ -61,9 +63,9 @@ export function setInitialProductsAsync(){
 	}
 }
 
-export function setInitialCart(currentUser){
+export function setInitialCart(currentUser: any){
 	
-	return async (dispatch, getState) => {
+	return async (dispatch: any, getState: any) => {
 		
 		dispatch(shopSlice.actions.setIsCartLoading(true));
 
@@ -82,7 +84,7 @@ export function setInitialCart(currentUser){
 
 export async function fetchProducts(){
 	
-	return async (dispatch, getState) => {
+	return async (dispatch: any, getState: any) => {
 		dispatch(shopSlice.actions.setIsProductLoading(true));
 		const products = await fetchAllProducts();
 		dispatch(shopSlice.actions.setProducts(products));
@@ -90,11 +92,11 @@ export async function fetchProducts(){
 	}
 }
 
-export function addProductToCart(product){
-	return async (dispatch, getState) => {
-		const existingProduct = getState().shop.cart.find((item) => item.id === product.id)
+export function addProductToCart(product: ProductInterface){
+	return async (dispatch: any, getState: any) => {
+		const existingProduct = getState().shop.cart.find((item: ProductInterface) => item.id === product.id)
 		if (existingProduct) {
-			const newCart = getState().shop.cart.map((item) => {
+			const newCart = getState().shop.cart.map((item: CartInterface) => {
 				if (item.id === product.id) {
 					return { ...item, quantity: item.quantity + 1 }
 				}
@@ -111,16 +113,16 @@ export function addProductToCart(product){
 
 
 export function clearCart(){
-	return async (dispatch, getState) => {
+	return async (dispatch: any, getState: any) => {
 		dispatch(shopSlice.actions.clearCart())
 		updateUserCart(getState().user.currentUser, [])
 	}
 }
 
 
-export function increaseQuantity(product){
-	return async (dispatch, getState) => {
-		const newCart = getState().shop.cart.map((item) => {
+export function increaseQuantity(product: CartInterface){
+	return async (dispatch: any, getState: any) => {
+		const newCart = getState().shop.cart.map((item: CartInterface) => {
 			if (item.id === product.id) {
 				return { ...item, quantity: item.quantity + 1 }
 			}
@@ -131,25 +133,25 @@ export function increaseQuantity(product){
 	}
 }
 
-export function decreaseQuantity(product){
-	return async (dispatch, getState) => {
+export function decreaseQuantity(product: CartInterface){
+	return async (dispatch: any, getState: any) => {
 		const newCart = getState().shop.cart
-			.map((item) => {
+			.map((item: CartInterface) => {
 				if (item.id === product.id) {
 					return { ...item, quantity: item.quantity - 1 }
 				}
 				return item
 			})
-			.filter((item) => item.quantity > 0)
+			.filter((item: CartInterface) => item.quantity > 0)
 		dispatch(shopSlice.actions.setCart(newCart))
 		updateUserCart(getState().user.currentUser, newCart)
 	}
 }
 
 
-export function removeProductFromCart(product){
-	return async (dispatch, getState) => {
-		const newCart = getState().shop.cart.filter((item) => item.id !== product.id)
+export function removeProductFromCart(product: CartInterface){
+	return async (dispatch: any, getState: any) => {
+		const newCart = getState().shop.cart.filter((item: CartInterface) => item.id !== product.id)
 		dispatch(shopSlice.actions.setCart(newCart))
 		updateUserCart(getState().user.currentUser, newCart)
 	}

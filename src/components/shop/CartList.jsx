@@ -49,7 +49,7 @@ const CartList = ({setShowModal, cart, isCartLoading, errorLoadingCart}) => {
 				</div>
 			}
 			{!isCartLoading && !errorLoadingCart && cart.length === 0 &&
-				<div className="w-full flex items-center justify-center ">
+				<div className="w-full flex items-center justify-center dark:invert dark:opacity-80">
 					<img src={emptyCartPNG} alt="No Products" className='w-[512px]'/>
 				</div>
 			}

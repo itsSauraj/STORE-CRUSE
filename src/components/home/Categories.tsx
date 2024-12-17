@@ -1,16 +1,20 @@
-import { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import CategoriesCard from "./CategoriesCard";
 
-import PropTypes from "prop-types";
+type TypeCategory = {
+	readonly id: string,
+	readonly title: string,
+	readonly image: string
+}
 
-const Categories = ({ categories }) => {
+const Categories: React.FC<{ categories: TypeCategory[] }> = ({ categories }) => {
 
-	let currentIndex = 0;
-	const [rowsConfig, setRowsConfig] = useState([3, 2]);
+	let currentIndex: number = 0;
+	const [rowsConfig, setRowsConfig] = useState<Array<number>>([3, 2]);
 
 	useEffect(() => {
 
-		const handleResize = () => {
+		const handleResize = () : void => {
 			if (window.innerWidth <= 480) {
 				setRowsConfig([1, 1, 1, 1, 1]);
 			} else if (window.innerWidth <= 768) {
@@ -34,7 +38,7 @@ const Categories = ({ categories }) => {
 	return (
 		<>
 			<div className="flex flex-col gap-4 p-4">
-				{rowsConfig.map((numItems, rowIndex) => {
+				{rowsConfig.map((numItems: number, rowIndex: number) => {
 					const rowItems = categories.slice(currentIndex, currentIndex + numItems);
 					currentIndex += numItems;
 
@@ -44,7 +48,7 @@ const Categories = ({ categories }) => {
 					return (
 						<div key={rowIndex} className={`flex gap-4`}>
 							{rowItems.map((item) => (
-								<CategoriesCard key={item.id} category={item} itemCount={numItems} />
+								<CategoriesCard key={item.id} category={item} />
 							))}
 						</div>
 					);
@@ -55,9 +59,3 @@ const Categories = ({ categories }) => {
 }
 
 export default Categories
-
-
-
-Categories.propTypes = {
-	categories: PropTypes.array.isRequired
-}

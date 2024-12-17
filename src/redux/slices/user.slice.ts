@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { StoreUserProfileInterface } from '../../types/user.interface';
 
-const initialState = {
+const initialState: StoreUserProfileInterface = {
 	currentUser: null,
 };
 

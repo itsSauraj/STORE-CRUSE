@@ -6,12 +6,13 @@ import PaperModal from '../../components/utilities/PaperModal'
 import CheckOutModal from '../../components/shop/CheckOutModal'
 
 import { useSelector } from 'react-redux'
-
+import { ShopState } from '../../types/shop.interface'
 
 const Checkout = () => {
 
 	const [showModal, setShowModal] = useState(false)
-	const { cart, isCartLoading, errorLoadingCart } = useSelector((state) => state.shop)
+	const { cart, isCartLoading, errorLoadingCart } = 
+		useSelector((state: { shop: ShopState }) => state.shop)
 
 	const total = {
 		price: cart.reduce((acc, item) => acc + item.price * item.quantity, 0),
@@ -30,8 +31,8 @@ const Checkout = () => {
 				/>
 			</div>
 			<PaperModal 
-				showModal={showModal} 
-				setShowModal={setShowModal} 
+				showModal={showModal}
+				setShowModal={setShowModal}
 				child={<CheckOutModal total_amount={total.price}/>}
 			/>
 		</>

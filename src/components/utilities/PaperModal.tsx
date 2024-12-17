@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { IoIosCloseCircle } from "react-icons/io";
 
-import PropTypes from 'prop-types';
 
 const backdropVariants = {
 	visible: { opacity: 1 },
@@ -14,6 +13,7 @@ const modalVariants = {
 	hidden: {	
 		opacity: 0,
 		scale: 0.6,
+		transition: { delay: 0.2 },
 	},
 	visible: {
 		scale: 1,
@@ -26,7 +26,13 @@ const modalVariants = {
 	}
 };
 
-const PaperModal = ({ showModal, setShowModal, child }) => {
+interface PaperModalProps {
+	showModal: boolean;
+	setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+	child: React.ElementType | React.ReactNode | React.ReactElement | any;
+}
+
+const PaperModal: React.FC<PaperModalProps> = ({ showModal, setShowModal, child }) => {
 	return (
 		<>
 			{showModal && (
@@ -60,11 +66,5 @@ const PaperModal = ({ showModal, setShowModal, child }) => {
 		</>
 	);
 };
-
-PaperModal.propTypes = {
-	showModal: PropTypes.bool.isRequired,
-	setShowModal: PropTypes.func.isRequired,
-	child: PropTypes.elementType.isRequired,
-}
 
 export default PaperModal;

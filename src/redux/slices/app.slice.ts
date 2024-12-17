@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { AppState } from '../../types/app.types';
 
-const initialState = {
+const initialState: AppState = {
 	theme: 'light',
 };
 
@@ -22,12 +23,12 @@ export const { setThemeLight, setThemeDark } = appSlice.actions;
 export default appSlice.reducer;
 
 export function toggleThemeAction(){
-	return (dispatch, getState) => {
+	return (dispatch: any, getState: any) => {
 		const { theme } = getState().app;
 		if(theme === 'light'){
-			dispatch(setThemeDark());
+			dispatch(setThemeDark(null));
 		} else {
-			dispatch(setThemeLight());
+			dispatch(setThemeLight(null));
 		}
 	}
 }

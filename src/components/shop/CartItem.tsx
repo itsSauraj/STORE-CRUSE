@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { FaXmark} from "react-icons/fa6";
+import { FaXmark } from "react-icons/fa6";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 
 import { NotificationContext } from '../../context/NotificationContext';
@@ -7,14 +7,18 @@ import { NotificationContext } from '../../context/NotificationContext';
 import { useDispatch } from 'react-redux';
 import { increaseQuantity, decreaseQuantity, removeProductFromCart } from '../../redux/slices/shop.slice'
 
-import PropTypes from 'prop-types'
+import { CartInterface } from '../../types/shop.interface';
 
-const CartItem = ({ item }) => {
+interface CartItemProps {
+	item: CartInterface
+}
+
+const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
 	const dispatch = useDispatch()
 	const { setNotification } = useContext(NotificationContext)
 
-	const handleQuantity = (type) => {
+	const handleQuantity = (type: string) => {
 		if (type === 'inc') {
 			dispatch(increaseQuantity(item))
 		} else {
@@ -59,7 +63,3 @@ const CartItem = ({ item }) => {
 }
 
 export default CartItem
-
-CartItem.propTypes = {
-	item: PropTypes.object.isRequired,
-}

@@ -1,17 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { FallingLines } from 'react-loader-spinner'
 
-import { useSelector } from 'react-redux'
+interface PaperButtonProps{
+	value: string;
+	className?: string;
+	onClick?: () => void;
+	type?: 'button' | 'submit' | 'reset';
+	isLoading?: boolean;
+}
 
-const PaperButton = ({ value, className, onClick, type='button', isLoading=false }) => {
-
-	const { theme } = useSelector(state => state.app)
-
-	
-	// React.useEffect(() => {
-	// 	alert(theme)
-	// }, [])
+const PaperButton: React.FC<PaperButtonProps> = ({ value, className, onClick, type='button', isLoading=false }) => {
 
 	return (
 		<button
@@ -45,7 +43,6 @@ const PaperButton = ({ value, className, onClick, type='button', isLoading=false
 						width="30"
 						height='30'
 						visible={true}
-						ariaLabel="falling-lines-loading"
 					/>
 				</div>
 			}
@@ -54,13 +51,3 @@ const PaperButton = ({ value, className, onClick, type='button', isLoading=false
 }
 
 export default PaperButton
-
-
-PaperButton.propTypes = {
-	value: PropTypes.string.isRequired,
-	className: PropTypes.string,
-	onClick: PropTypes.func,
-	type: PropTypes.string,
-	isLoading: PropTypes.bool
-}
-

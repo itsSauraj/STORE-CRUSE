@@ -25,6 +25,8 @@ export default {
 					"url('/src/assets/images/pattern-slant-lines.svg')",
 				"slant-lines-secondary":
 					"url('/src/assets/images/pattern-slant-lines-light.png')",
+				"texture":
+					"url('/src/assets/svg/noise.svg')",
 			},
 			backgroundSize: {
 				size1: "100px 100px",

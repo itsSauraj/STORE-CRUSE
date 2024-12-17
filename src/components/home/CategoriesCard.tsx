@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom'
 
-import PropTypes from 'prop-types'
+type TypeCategory = {
+	readonly id: string,
+	readonly title: string,
+	readonly image: string
+}
 
-const CategoriesCard = ({ category }) => {
+const CategoriesCard : React.FC<{ category: TypeCategory }>  = ({ category }) => {
 	return (
 		<div key={category.id} className={`relative bg-primary border-2 border-primary dark:border-secondary overflow-hidden h-[200px] md:h-[300px] flex-grow
 	`}>
@@ -32,8 +36,3 @@ const CategoriesCard = ({ category }) => {
 }
 
 export default CategoriesCard
-
-CategoriesCard.propTypes = {
-	category: PropTypes.object.isRequired,
-	itemCount: PropTypes.number.isRequired
-}

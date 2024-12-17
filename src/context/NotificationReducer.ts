@@ -1,6 +1,6 @@
 export type TypeNotification = {
-    message?: string,
-    status?: string,
+    message?: string | null,
+    status?: 'success' | 'error' | 'warning' | 'info' | null,
 }
 
 export type TypeNotificationState = {

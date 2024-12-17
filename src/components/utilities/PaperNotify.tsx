@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
-import PropTypes from 'prop-types'
 
 const variants = {
 	initial: { opacity: 0, x: 100, y: 0 },
@@ -9,7 +8,18 @@ const variants = {
 	exit: { opacity: 0 }
 }
 
-const PaperNotify = ({ notifyStatus, setNotifyStatus, duration=3000 }) => {
+type notification = {
+	message?: string | null;
+	status?: 'error' | 'success' | 'warning' | 'info' | null;
+}
+
+interface PaperNotifyProps {
+	notifyStatus: notification;
+	setNotifyStatus: (arg: notification) => void;
+	duration?: number;
+}
+
+const PaperNotify: React.FC<PaperNotifyProps> = ({ notifyStatus, setNotifyStatus, duration=3000 }) => {
 	const [display, setDisplay] = useState('block')
 
 	useEffect(() => {
@@ -21,7 +31,7 @@ const PaperNotify = ({ notifyStatus, setNotifyStatus, duration=3000 }) => {
 
 	}, [notifyStatus])
 
-	const showNotify = () => {
+	const showNotify = () : void => {
 		setDisplay('block')
 		
 		setTimeout(() => {
@@ -76,9 +86,3 @@ const PaperNotify = ({ notifyStatus, setNotifyStatus, duration=3000 }) => {
 }
 
 export default PaperNotify
-
-PaperNotify.propTypes = {
-	notifyStatus: PropTypes.object.isRequired,
-	setNotifyStatus: PropTypes.func.isRequired,
-	duration: PropTypes.number,
-}
