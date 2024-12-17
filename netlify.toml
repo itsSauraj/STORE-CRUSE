@@ -2,7 +2,11 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+[build]
+  publish = "dist"
+  command = "vite build"
+
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  from = "/*"
+  to = "/index.html"
   status = 200
