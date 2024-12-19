@@ -9,6 +9,7 @@ import { db } from "./filrebase.utils";
 
 import { CartInterface, ProductInterface } from './../../types/shop.interface';
 import { User } from "firebase/auth";
+import { UserProfileInterface } from "../../types/user.interface";
 
 const fetchAllProducts = async (): Promise<ProductInterface[]> => {
 	try {
@@ -41,7 +42,7 @@ const fecthUserCart = async<T extends User>(user: User):  Promise<CartInterface[
 	const userRef = doc(db, "users", user.uid);
 	try{
 		const snapShot = await getDoc(userRef);
-		const data = snapShot.data();
+		const data = snapShot.data() as UserProfileInterface;
 		if (data) {
 			return data.cart;
 		} else {

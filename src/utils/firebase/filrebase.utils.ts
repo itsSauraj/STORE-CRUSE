@@ -25,6 +25,7 @@ import {
 	where,
 	getDocs,
 } from "firebase/firestore";
+import { UserProfileInterface } from "../../types/user.interface";
 
 
 
@@ -99,7 +100,7 @@ const createUserProfileDocumentOrGetProfile =
 		}
 	}
 
-	return snapShot.data();
+	return snapShot.data() as UserProfileInterface;
 }
 
 type formData = {
