@@ -1,18 +1,45 @@
-import { useEffect, useState, useContext } from 'react'
+import { useEffect, useState, useContext, ChangeEvent } from 'react'
 
 import PaperTextBox from '../../components/utilities/PaperTextBox'
 import PaperButton from '../../components/utilities/PaperButton'
 
-import { signInWithGooglePopup, CreateCustomUser } from '../../utils/firebase/filrebase.utils'
-import { Link, useNavigate } from 'react-router-dom'
+import { signInWithGooglePopup, CreateCustomUser, createUserProfileDocumentOrGetProfile } from '../../utils/firebase/filrebase.utils'
+import { Link } from 'react-router-dom'
 import { NotificationContext } from "../../context/NotificationContext"
+
+
+type formData = {
+	displayName: string,
+	email: string,
+	password1: string,
+	password2: string
+}
+
+type status = {
+	displayName?: {
+		message: string,
+		status: string
+	} | null,
+	email?: {
+		message: string,
+		status: string
+	} | null,
+	password1?: {
+		message: string,
+		status: string
+	} | null,
+	password2?: {
+		message: string,
+		status: string
+	} | null
+}
+
 
 const SignUpPage = () => {
 
-	const navigate = useNavigate()
 	const { setNotification } = useContext(NotificationContext)
 
-	const [loginFormData, setLoginFormData] = useState({
+	const [loginFormData, setLoginFormData] = useState<formData>({
 		displayName: '',
 		email: '',
 		password1: '',
@@ -28,9 +55,9 @@ const SignUpPage = () => {
 		})
 	}
 
-	const [status, setStatus] = useState({})
+	const [status, setStatus] = useState<status>({})
 
-	const handelChange = (e) => {
+	const handelChange = (e : ChangeEvent<HTMLInputElement>) => {
 		setLoginFormData({
 			...loginFormData,
 			[e.target.name]: e.target.value
@@ -105,25 +132,19 @@ const SignUpPage = () => {
 		}
 	}
 
-	const handelFormSubmit = async (e) => {
+	const handelFormSubmit = async (e: any) : Promise<void> => {
 		e.preventDefault()
-		
 		if (!status.password1 && !status.password2) {
-			try{
-				const status = await CreateCustomUser(loginFormData)
-				if (status.error) {
-					setNotification({
-						message: "Emali already exists please login",
-						status: 'error'
-					})
-					navigate('/auth/login')
-				}
-			} catch (error) {
+			const UserObject: any = 
+			await CreateCustomUser(loginFormData)
+			if (UserObject.error) {
 				setNotification({
-					message: 'Error Creating User',
+					message: UserObject.error,
 					status: 'error'
 				})
+				return
 			}
+			createUserProfileDocumentOrGetProfile(UserObject.user, loginFormData)
 		} else {
 			setNotification({
 				message: 'Please check the form for errors',
@@ -142,7 +163,6 @@ const SignUpPage = () => {
 						<p className='text-[16.5px] text-light opacity-80'>Sign up now</p>
 					</div>
 					<PaperTextBox
-						// label={'Full Name'}
 						required={true}
 						id={'cruse_displayName'}
 						value={loginFormData.displayName}
@@ -152,7 +172,6 @@ const SignUpPage = () => {
 						status={status.displayName}
 					/>
 					<PaperTextBox
-						// label={'Email'}
 						required={true}
 						id={'cruse_email'}
 						value={loginFormData.email}
@@ -162,7 +181,6 @@ const SignUpPage = () => {
 						status={status.email}
 					/>
 					<PaperTextBox
-						// label={'Password'}
 						required={true}
 						id={'cruse_password1'}
 						value={loginFormData.password1}

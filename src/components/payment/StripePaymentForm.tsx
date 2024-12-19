@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, ChangeEvent } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 import { useNavigate } from 'react-router-dom';
@@ -6,12 +6,24 @@ import { useNavigate } from 'react-router-dom';
 import { NotificationContext } from '../../context/NotificationContext';
 
 import PaperButton from '../utilities/PaperButton'
-import PropTypes from 'prop-types'
+
 import { useSelector, useDispatch } from 'react-redux';
 
 import { clearCart } from '../../redux/slices/shop.slice';
 
-const StripePaymentForm = ({ amount }) => {
+import { StoreUserProfileInterface } from '../../types/user.interface';
+
+interface StripePaymentFormProps {
+	amount: number
+}
+
+type ResponseBody = {
+	clientSecret: {
+		client_secret: string
+	}
+}
+
+const StripePaymentForm: React.FC<StripePaymentFormProps> = ({ amount }) => {
 	
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
@@ -19,14 +31,14 @@ const StripePaymentForm = ({ amount }) => {
 	const [paymentIsLoading, setPaymentIsLoading] = useState(false)
 	
 	const { setNotification } = useContext(NotificationContext)
-	const { currentUser } = useSelector(state => state.user)
+	const { currentUser } = useSelector((state : { user: StoreUserProfileInterface }) => state.user)
 
 	amount = amount * 100;
 
 	const stripe = useStripe();
 	const elements = useElements();
 
-	const handleSubmit = async (event) => {
+	const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		console.log('stripe', stripe)
 
@@ -36,7 +48,7 @@ const StripePaymentForm = ({ amount }) => {
 
 		setPaymentIsLoading(true)
 
-		const response = await fetch('/.netlify/functions/payment-intent', {
+		const response: ResponseBody = await fetch('/.netlify/functions/payment-intent', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -48,9 +60,9 @@ const StripePaymentForm = ({ amount }) => {
 		
 		const result = await stripe.confirmCardPayment(clientSecret, {
 			payment_method: {
-				card: elements.getElement(CardElement),
+				card: elements.getElement(CardElement) as any,
 				billing_details: {
-					name: `name: ${currentUser.displayName} || id : ${currentUser.uid}`
+					name: `name: ${currentUser?.displayName} || id : ${currentUser?.uid}`
 				}
 			}
 		});
@@ -68,7 +80,7 @@ const StripePaymentForm = ({ amount }) => {
 					message: 'Payment Successful',
 					status: 'success'
 				})
-				dispatch(clearCart())
+				dispatch(clearCart() as any)
 				navigate('/shop')
 			}
 		}
@@ -91,9 +103,5 @@ const StripePaymentForm = ({ amount }) => {
 		</form>
 	);
 };
-
-StripePaymentForm.propTypes = {
-	amount: PropTypes.number.isRequired
-}
 
 export default StripePaymentForm;

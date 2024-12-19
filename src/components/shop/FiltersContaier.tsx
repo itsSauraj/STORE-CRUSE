@@ -1,9 +1,16 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, ChangeEvent } from "react";
 import { useLocation } from "react-router-dom";
-import PropTypes from "prop-types";
 import PaperButton from "../utilities/PaperButton";
 
-const FiltersContainer = ({ filters, originalData, setFilteredData }) => {
+import { ProductInterface } from "../../types/shop.interface";
+
+interface FiltersContainerProps {
+	filters: string[];
+	originalData: ProductInterface[];
+	setFilteredData: React.Dispatch<React.SetStateAction<ProductInterface[]>>;
+}
+
+const FiltersContainer: React.FC<FiltersContainerProps> = ({ filters, originalData, setFilteredData }) => {
 	const location = useLocation();
 	const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
 		
@@ -37,7 +44,7 @@ const FiltersContainer = ({ filters, originalData, setFilteredData }) => {
 		filterItems();
 	}, [activeFilters, originalData, setFilteredData, queryParams]);
 
-	const handleFilter = (e) => {
+	const handleFilter = (e: ChangeEvent<HTMLButtonElement>) => {
 		const value = e.target.innerText;
 		setActiveFilters((prevFilters) =>
 			prevFilters.includes(value)
@@ -49,9 +56,9 @@ const FiltersContainer = ({ filters, originalData, setFilteredData }) => {
 	return (
 		<div className="w-full overflow-x-auto flex justify-start lg:justify-center">
 			<div className="flex justify-center py-4 h-15 w-max">
-				{filters.map((filter) => (
+				{filters.map((filter, index) => (
 					<PaperButton
-						key={filter}
+						key={index}
 						onClick={handleFilter}
 						value={filter}
 						className={`
@@ -60,19 +67,11 @@ const FiltersContainer = ({ filters, originalData, setFilteredData }) => {
 						? "bg-primary dark:bg-secondary text-secondary dark:text-primary border-primary dark:border-secondary"
 						: "bg-secondary dark:bg-primary text-primary dark:text-secondary"
 					}`}
-					>
-						{filter}
-					</PaperButton>
+					/>
 				))}
 			</div>
 		</div>
 	);
-};
-
-FiltersContainer.propTypes = {
-	filters: PropTypes.array.isRequired,
-	originalData: PropTypes.array.isRequired,
-	setFilteredData: PropTypes.func.isRequired,
 };
 
 export default FiltersContainer;

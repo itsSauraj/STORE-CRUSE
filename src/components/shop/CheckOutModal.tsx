@@ -1,20 +1,16 @@
-import React from 'react'
-
 import StripePaymentForm from '../payment/StripePaymentForm'
 
-import PropTypes from 'prop-types'
+interface CheckOutModalProps {
+	total_amount: number
+}
 
-const CheckOutModal = ({ total_amount }) => {
+const CheckOutModal: React.FC<CheckOutModalProps> = ({ total_amount }) => {
 	return (
 		<>
 			<div>StripePaymentForm</div>
 			<StripePaymentForm amount={total_amount} />
 		</>
 	)
-}
-
-CheckOutModal.propTypes = {
-	total_amount: PropTypes.number.isRequired
 }
 
 export default CheckOutModal

@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, ChangeEvent } from 'react'
 
 import PaperTextBox from '../../components/utilities/PaperTextBox'
 import PaperButton from '../../components/utilities/PaperButton'
@@ -21,7 +21,7 @@ const LoginPage = () => {
 		password: ''
 	})
 
-	const handelChange = (e) => {
+	const handelChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setLoginFormData({
 			...loginFormData,
 			[e.target.name]: e.target.value
@@ -42,7 +42,7 @@ const LoginPage = () => {
 	const handelLoginWithEmailPassword = async () => {
 		try{
 			await signInWithEmailPassword(loginFormData.email, loginFormData.password)
-		} catch (error) {
+		} catch (error: any) {
 			if (!checkIfUserPasswordSet(loginFormData.email)){
 				setNotification({
 					message: 'Please enter a password',
@@ -88,7 +88,6 @@ const LoginPage = () => {
 						<p className='text-[16.5px] text-light opacity-80'>Sign in with your email and password</p>
 					</div>
 					<PaperTextBox 
-						// label={'Email'}
 						id={'cruse_email'}
 						value={loginFormData.email}
 						name={`email`} 
@@ -96,7 +95,6 @@ const LoginPage = () => {
 						placeholder={`Email`}
 					/>
 					<PaperTextBox 
-						// label={'Password'}
 						id={'cruse_password'}
 						value={loginFormData.password}
 						type='password' 

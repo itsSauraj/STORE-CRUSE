@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { FallingLines } from 'react-loader-spinner'
 
-interface PaperButtonProps{
+interface PaperButtonProps {
 	value: string;
 	className?: string;
-	onClick?: () => void;
+	onClick?: (event: ChangeEvent<HTMLButtonElement>) => void;
 	type?: 'button' | 'submit' | 'reset';
 	isLoading?: boolean;
 }

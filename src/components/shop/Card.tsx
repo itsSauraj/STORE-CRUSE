@@ -3,14 +3,18 @@ import { motion } from 'framer-motion'
 
 import PaperButton from '../utilities/PaperButton';
 
-import PropTypes from 'prop-types';
-
 import { NotificationContext } from '../../context/NotificationContext';
 
 import { useDispatch } from 'react-redux';
 import { addProductToCart } from '../../redux/slices/shop.slice';
 
-const Card = ({ item }) => {
+import { ProductInterface } from '../../types/shop.interface';
+
+interface CardProps {
+	item: ProductInterface
+}
+
+const Card : React.FC<CardProps> = ({ item }) => {
 	const [isLoading, setIsLoading] = useState(true);
 
 	const { setNotification } = useContext(NotificationContext);
@@ -22,7 +26,7 @@ const Card = ({ item }) => {
 	const dispatch = useDispatch();
 
 	const handleAddToCart = () => {
-		dispatch(addProductToCart(item));
+		dispatch(addProductToCart(item) as any);
 		setNotification({
 			message: 'Item added to cart',
 			status: 'success',
@@ -60,8 +64,4 @@ const Card = ({ item }) => {
 }
 
 
-export default Card
-
-Card.propTypes = {
-	item: PropTypes.object.isRequired,
-};
+export default Card;

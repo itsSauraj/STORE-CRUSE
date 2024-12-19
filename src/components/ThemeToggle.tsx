@@ -9,7 +9,7 @@ const ThemeToggle: React.FC = () => {
 	const { theme } = useSelector((state: { app: { theme: string } }) => state.app);
 
 	const toggleTheme = () => {
-		dispatch(toggleThemeAction());
+		dispatch(toggleThemeAction() as any);
 	};
 	
 	useEffect(() => {

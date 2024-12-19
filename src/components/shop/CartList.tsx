@@ -15,16 +15,20 @@ import loadingImg from "../../assets/gifs/loading.gif";
 import emptyCartPNG from '../../assets/images/empty-cart.png';
 
 
-import PropTypes from 'prop-types'
+interface CartListProps {
+	setShowModal: (value: boolean) => void
+	cart: any[]
+	isCartLoading: boolean
+	errorLoadingCart: boolean
+}
 
-
-const CartList = ({setShowModal, cart, isCartLoading, errorLoadingCart}) => {
+const CartList: React.FC<CartListProps> = ({setShowModal, cart, isCartLoading, errorLoadingCart}) => {
 
 	const { setNotification } = useContext(NotificationContext)
 	const dispatch = useDispatch()
 
 	const handelClearCart = () => {
-		dispatch(clearCart())
+		dispatch(clearCart() as any)
 		setNotification({
 			message: 'Cart Cleared',
 			status: 'success'
@@ -89,13 +93,6 @@ const CartList = ({setShowModal, cart, isCartLoading, errorLoadingCart}) => {
 			}
 		</>
 	)
-}
-
-CartList.propTypes = {
-	setShowModal: PropTypes.func,
-	cart: PropTypes.array,
-	isCartLoading: PropTypes.bool,
-	errorLoadingCart: PropTypes.bool,
 }
 
 export default CartList

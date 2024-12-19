@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, ChangeEvent } from 'react'
 
 import PaperTextBox from '../../components/utilities/PaperTextBox'
 import PaperButton from '../../components/utilities/PaperButton'
@@ -14,7 +14,7 @@ const PasswordResetPage = () => {
 
 	const [email, setEmail] = useState('')
 
-	const handelChange = (e) => {
+	const handelChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setEmail(e.target.value)
 	}
 

@@ -1,6 +1,13 @@
-import PropTypes from "prop-types";
+import React from 'react'
 
-const BrandIcon = ({ width = 400, height = 400, bgFill = "fill-primary", fgFill = "fill-white" }) => {
+interface BrandIconProps {
+	width?: number;
+	height?: number;
+	bgFill?: string;
+	fgFill?: string;
+}
+
+const BrandIcon: React.FC<BrandIconProps> = ({ width = 400, height = 400, bgFill = "fill-primary", fgFill = "fill-white" }) => {
 	return (
 		<>
 			<svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} data-id="lg_W7hX0diR8wbQMP2QUR" data-version="1" viewBox="450.879 -15.396 607.039 426.393">
@@ -31,10 +38,3 @@ const BrandIcon = ({ width = 400, height = 400, bgFill = "fill-primary", fgFill 
 }
 
 export default BrandIcon
-
-BrandIcon.propTypes = {
-	width: PropTypes.number,
-	height: PropTypes.number,
-	bgFill: PropTypes.string,
-	fgFill: PropTypes.string
-}

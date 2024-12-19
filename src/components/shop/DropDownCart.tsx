@@ -1,9 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect, ChangeEvent, MutableRefObject, LegacyRef, RefObject } from 'react';
 import { motion } from 'framer-motion';
 
 import { Link } from 'react-router-dom';
-
-import PropTypes from 'prop-types';
 
 import DropDownCard from './DropDownCard';
 
@@ -13,12 +11,19 @@ import loadingImg from '../../assets/gifs/loading.gif';
 
 import { useSelector } from 'react-redux';
 
-const DropDownCart = ({ isOpen, setIsOpen }) => {
+import { ShopState } from '../../types/shop.interface';
 
-	const dropdownRef = useRef(null);
-	const { cart, isCartLoading, errorLoadingCart } = useSelector(state => state.shop)
+interface DropDownCartProps {
+	isOpen: boolean;
+	setIsOpen: (value: boolean) => void;
+}
 
-	const handleClickOutside = (event) => {
+const DropDownCart: React.FC<DropDownCartProps> = ({ isOpen, setIsOpen }) => {
+
+	const dropdownRef: LegacyRef<HTMLDivElement> = useRef(null);
+	const { cart, isCartLoading, errorLoadingCart } = useSelector((state: { shop: ShopState }) => state.shop)
+
+	const handleClickOutside: any = (event: ChangeEvent<HTMLElement>) => {
 		if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
 			setIsOpen(false);
 		}
@@ -86,9 +91,3 @@ const DropDownCart = ({ isOpen, setIsOpen }) => {
 };
 
 export default DropDownCart;
-
-
-DropDownCart.propTypes = {
-	isOpen: PropTypes.bool.isRequired,
-	setIsOpen: PropTypes.func.isRequired,
-}

@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 
-import PropTypes from 'prop-types';
+interface TransitionProps {
+	component: React.ReactNode;
+}
 
-const Transition = ({ component }) => {
+const Transition: React.FC<TransitionProps> = ({ component }) => {
 	return (
 		<>
 			{component}
@@ -31,9 +33,5 @@ const Transition = ({ component }) => {
 		</>
 	)
 }
-
-Transition.propTypes = {
-	component: PropTypes.node.isRequired,
-};
 
 export default Transition

@@ -1,5 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
+import { createSlice, Dispatch } from '@reduxjs/toolkit';
 
 import { fetchAllProducts, fecthUserCart, updateUserCart } from "../../utils/firebase/shop.utils"
 
@@ -135,8 +134,8 @@ export function increaseQuantity(product: CartInterface){
 
 export function decreaseQuantity(product: CartInterface){
 	return async (dispatch: any, getState: any) => {
-		const newCart = getState().shop.cart
-			.map((item: CartInterface) => {
+		const newCart : CartInterface[] = getState().shop.cart
+			.map((item : CartInterface) => {
 				if (item.id === product.id) {
 					return { ...item, quantity: item.quantity - 1 }
 				}
@@ -151,7 +150,7 @@ export function decreaseQuantity(product: CartInterface){
 
 export function removeProductFromCart(product: CartInterface){
 	return async (dispatch: any, getState: any) => {
-		const newCart = getState().shop.cart.filter((item: CartInterface) => item.id !== product.id)
+		const newCart : CartInterface[] = getState().shop.cart.filter((item: CartInterface) => item.id !== product.id)
 		dispatch(shopSlice.actions.setCart(newCart))
 		updateUserCart(getState().user.currentUser, newCart)
 	}

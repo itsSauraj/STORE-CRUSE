@@ -1,23 +1,33 @@
 import React, { useState } from 'react'
 
-import PropTypes from 'prop-types'
 import EyeIcon from './svg_icons/EyeIcon'
 import EveStashIcon from './svg_icons/EveStashIcon'
 
-const PaperTextBox = ({ 
-	required=false,
-	type="text", 
-	value="", 
-	onChange, 
-	containerClassName,
-	labelClassName,
-	inputClassName,
-	eyeClassName,
-	label, 
-	id, 
-	name, 
-	placeholder,
-	status
+interface PaperTextBoxProps {
+	value: string,
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+	containerClassName?: string,
+	labelClassName?: string,
+	inputClassName?: string,
+	eyeClassName?: string,
+	type?: string,
+	label?: string,
+	id?: string,
+	name?: string,
+	placeholder?: string,
+	status?: {
+		message: string ,
+		status: string 
+	} | null,
+	required?: boolean
+}
+
+const PaperTextBox: React.FC<PaperTextBoxProps> = ({ 
+	required=false, type="text", value="",
+	onChange, containerClassName, labelClassName,
+	inputClassName, eyeClassName,label,
+	id, name, placeholder, status
+	
 }) => {
 
 	const [showPassword, setShowPassword] = useState(false)
@@ -68,7 +78,7 @@ const PaperTextBox = ({
 							showPassword ? 
 								<EyeIcon
 									size="20px"
-									clasName={`text-primary dark:text-secondary cursor-pointer w-[10px] h-[10px] pointer-events-auto
+									className={`text-primary dark:text-secondary cursor-pointer w-[10px] h-[10px] pointer-events-auto
 										fill-primary dark:fill-secondary
 										${eyeClassName}
 									`}/> 
@@ -91,19 +101,3 @@ const PaperTextBox = ({
 }
 
 export default PaperTextBox
-
-PaperTextBox.propTypes = {
-	value: PropTypes.string,
-	onChange: PropTypes.func,
-	containerClassName: PropTypes.string,
-	labelClassName: PropTypes.string,
-	inputClassName: PropTypes.string,
-	eyeClassName: PropTypes.string,
-	type: PropTypes.string,
-	label: PropTypes.string,
-	id: PropTypes.string,
-	name: PropTypes.string,
-	placeholder: PropTypes.string,
-	status: PropTypes.object,
-	required: PropTypes.bool
-}

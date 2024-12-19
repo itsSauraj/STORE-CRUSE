@@ -19,9 +19,11 @@ const filters = [
 	"kurti",	
 ];
 
+import { ShopState } from "../../types/shop.interface";
+
 const ShopPage = () => {
 
-	const { products, isProductLoading, errorLoadingProducts } = useSelector(state => state.shop)
+	const { products, isProductLoading, errorLoadingProducts } = useSelector((state : { shop: ShopState }) => state.shop)
 	const [filteredData, setFilteredData] = useState(products);
 
 	return (

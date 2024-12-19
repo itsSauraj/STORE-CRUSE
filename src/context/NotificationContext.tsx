@@ -19,7 +19,7 @@ const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 	const { notification = null, duration } = state
 
 	const setNotification = (notification : TypeNotification) => {
-		dispatch(showNotification(notification))
+		dispatch(showNotification(notification) as any)
 	}
 
 	const values = {

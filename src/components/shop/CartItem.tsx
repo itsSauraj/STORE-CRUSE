@@ -20,14 +20,14 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
 
 	const handleQuantity = (type: string) => {
 		if (type === 'inc') {
-			dispatch(increaseQuantity(item))
+			dispatch(increaseQuantity(item) as any)
 		} else {
-			dispatch(decreaseQuantity(item))
+			dispatch(decreaseQuantity(item) as any)
 		}
 	}
 
 	const handleRemove = () => {
-		dispatch(removeProductFromCart(item))
+		dispatch(removeProductFromCart(item) as any)
 		setNotification({
 			message: `${item.title} removed from cart`,
 			status: 'success'

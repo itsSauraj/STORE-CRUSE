@@ -1,4 +1,12 @@
-const data = [
+type Product = {
+	title: string;
+	price: number;
+	image: string;
+	description: string;
+	category: string[];
+}
+
+const data: Product[] = [
 	{
 		title: "Women's Elegant Blouse",
 		price: 200,
@@ -86,7 +94,7 @@ const data = [
 ];
 
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "./utils";
+import { db } from "./filrebase.utils";
 
 export const uploadProducts = async () => {
 	try {

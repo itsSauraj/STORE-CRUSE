@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef } from 'react'
+import { useState, useEffect, useContext, useRef, EventHandler, RefObject, MouseEventHandler } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { BrandIcon } from '../assets/svg'
@@ -15,9 +15,11 @@ import { logoutUser } from '../redux/slices/user.slice'
 
 import { useSelector, useDispatch } from 'react-redux'
 
-import DropDownCart from '../components/shop/DropDownCart'
+import DropDownCart from './shop/DropDownCart'
 
 import { BagIcon } from '../assets/svg'
+
+import { StoreUserProfileInterface } from '../types/user.interface'
 
 const navLinks = [
 	{
@@ -28,9 +30,8 @@ const navLinks = [
 
 const Navbar = () => {
 
-
 	const dispatch = useDispatch()
-	const currentUser = useSelector(state => state.user.currentUser)
+	const { currentUser } = useSelector((state : {user: StoreUserProfileInterface}) => state.user)
 
 	const { setNotification } = useContext(NotificationContext)
 
@@ -38,7 +39,7 @@ const Navbar = () => {
 	const location = useLocation()
 	const navigate = useNavigate()
 
-	const handleNav = () => {
+	const handleNav = () : void => {
 		setNav(!nav)
 	}
 
@@ -52,10 +53,6 @@ const Navbar = () => {
 
 	const handleLogout = async () => {
 		dispatch(logoutUser(null))
-		dispatch({
-			type: 'SET_USER',
-			payload: null
-		})
 		await LogOutUser()
 		setNotification({
 			message: 'User Logged Out',
@@ -64,10 +61,10 @@ const Navbar = () => {
 		setNav(false)
 	}
 
-	const cartIconRef = useRef([]);
+	const cartIconRef = useRef<Array<HTMLElement>>([]);
 	const [isOpen, setIsOpen] = useState(false);
 
-	const toggleDropdown = () => {
+	const toggleDropdown = (event: EventHandler<any>) : void => {
 		setIsOpen((prev) => !prev);
 	};
 
@@ -100,8 +97,8 @@ const Navbar = () => {
 								className='bg-primary dark:bg-secondary px-2 py-1 text-secondary dark:text-primary'
 							/>
 							<BagIcon
-								onClickHandler={() => toggleDropdown()}
-								ref = {(el) => (cartIconRef.current[0] = el)}
+								onClickHandler={toggleDropdown as any}
+								ref={(el : HTMLElement) => (cartIconRef.current[0] = el)}
 								width={70} 
 								height={40}
 								strokeColor='stroke-primary dark:stroke-secondary'
@@ -114,8 +111,8 @@ const Navbar = () => {
 				<div className='flex gap-2 items-center md:hidden'>
 					{currentUser && (
 						<BagIcon
-							onClickHandler={() => toggleDropdown()}
-							ref = {(el) => (cartIconRef.current[1] = el)}	
+							onClickHandler={toggleDropdown as any}
+							ref = {(el : HTMLElement) => (cartIconRef.current[1] = el)}	
 							width={25} 
 							height={25}
 							strokeColor='stroke-primary dark:stroke-secondary'

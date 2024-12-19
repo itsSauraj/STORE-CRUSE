@@ -1,11 +1,26 @@
-import React, { forwardRef } from "react";
+import React, { ChangeEvent, forwardRef, LegacyRef, MouseEventHandler } from "react";
 
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
-const BagIcon = forwardRef(({ width=1024, height=1024, fill="none", strokeColor="stroke-primary dark:stroke-secondary", textColor="fill-primary dark:fill-secondary" , count=0, onClickHandler }, ref) => {
+import { ShopState } from "../../types/shop.interface";
+
+interface BagIconProps {
+	width?: number;
+	height?: number;
+	fill?: string;
+	strokeColor?: string;
+	textColor?: string;
+	count?: number;
+	onClickHandler?: MouseEventHandler<SVGSVGElement> | undefined;
+}
+
+const BagIcon: React.FC<BagIconProps> = forwardRef(({ 
+	width=1024, height=1024, fill="none", 
+	strokeColor="stroke-primary dark:stroke-secondary", 
+	textColor="fill-primary dark:fill-secondary" , count=0, onClickHandler }, 
+	ref: React.LegacyRef<SVGSVGElement>) => {
 	
-	const { cart } = useSelector(state => state.shop);
+	const { cart } = useSelector((state : { shop: ShopState }) => state.shop);
 	if (cart.length > 0) {
 		count = cart.reduce((acc, item) => acc + item.quantity, 0);
 	}
@@ -85,15 +100,5 @@ const BagIcon = forwardRef(({ width=1024, height=1024, fill="none", strokeColor=
 });
 
 BagIcon.displayName = "BagIcon";
-
-BagIcon.propTypes = {
-	width: PropTypes.number,
-	height: PropTypes.number,
-	fill: PropTypes.string,
-	strokeColor: PropTypes.string,
-	textColor: PropTypes.string,
-	count: PropTypes.number,
-	onClickHandler: PropTypes.func
-}
 
 export default BagIcon

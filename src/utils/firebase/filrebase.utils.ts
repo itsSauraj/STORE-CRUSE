@@ -11,6 +11,8 @@ import {
 	sendPasswordResetEmail,
 	sendEmailVerification,
 	onAuthStateChanged,
+	UserCredential,
+	updateProfile
 } from "firebase/auth";
 
 import {
@@ -25,7 +27,18 @@ import {
 } from "firebase/firestore";
 
 
-const firebaseConfig = {
+
+type FirebaseConfig = {
+	apiKey: string,
+	authDomain: string,
+	projectId: string,
+	storageBucket: string,
+	messagingSenderId: string,
+	appId: string,
+	measurementId: string,
+}
+
+const firebaseConfig: FirebaseConfig = {
 	apiKey: import.meta.env.VITE_FIREBASE_API_KEY, 
 	authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
 	projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
@@ -46,13 +59,20 @@ const auth = getAuth(firebaseApp);
 
 const signInWithGooglePopup = () => signInWithPopup(auth, providerPopUp);
 
-const signInWithEmailPassword = (email, password) => {
+const signInWithEmailPassword = (email: string, password: string): Promise<UserCredential> => {
 	return signInWithEmailAndPassword(auth, email, password);
 }
 
 const db = getFirestore(firebaseApp);
 
-const createUserProfileDocumentOrGetProfile = async (userAuth, additionalData) => {
+type additionalData = {
+	displayName: string,
+	email: string,
+	password1?: string,
+}
+
+const createUserProfileDocumentOrGetProfile = 
+	async (userAuth: UserCredential['user'], additionalData: additionalData) => {
 	if (!userAuth) return;
 
 	const userRef = doc(db, "users", userAuth.uid);
@@ -61,9 +81,9 @@ const createUserProfileDocumentOrGetProfile = async (userAuth, additionalData) =
 
 	if (!snapShot.exists()) {
 		const createdAt = new Date();
-		let displayName = userAuth.displayName || additionalData.displayName;
-		let email = userAuth.email || additionalData.email;
-		let passwordSet = additionalData && (additionalData.password1) ? true : false;
+		let displayName: string = additionalData?.displayName;
+		let email: string = additionalData?.email;
+		let passwordSet = additionalData.password1 ? true : false;
 
 		try {
 			await setDoc(userRef, {
@@ -82,15 +102,30 @@ const createUserProfileDocumentOrGetProfile = async (userAuth, additionalData) =
 	return snapShot.data();
 }
 
-const CreateCustomUser = async (formData) => {
-	try {
-		await createUserWithEmailAndPassword(auth, formData.email, formData.password1);
-	} catch (error) {
-		return { error: error };
+type formData = {
+	displayName: string,
+	email: string,
+	password1: string,
+}
+
+const CreateCustomUser = async (formData: formData) => {
+	try{
+		const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password1);
+		await updateProfile(userCredential.user, {
+			displayName: formData.displayName
+		});
+		return userCredential;
+	} catch (error: any) {
+		if (error.code == "auth/email-already-in-use"){
+			return { error: "Email already in use" };
+		}
+		return {
+			error: "Error creating user",
+		}
 	}
 }
 
-const checkIfUserPasswordSet = async (userEmail) => {
+const checkIfUserPasswordSet = async (userEmail: string) => {
 
 	const userCollectionInstance = collection(db, "users");
 	const userQuery = query(userCollectionInstance, where("email", "==", userEmail));
@@ -102,15 +137,15 @@ const checkIfUserPasswordSet = async (userEmail) => {
 
 }
 
-const sendPasswordResetEmailToUser = async (email) => {
+const sendPasswordResetEmailToUser = async (email: string): Promise<void> => {
 	return sendPasswordResetEmail(auth, email);
 }
 
-const LogOutUser = async () => {
+const LogOutUser = async (): Promise<void> => {
 	return await signOut(auth);
 }
 
-const AuthStateChanged = (callback) => {
+const AuthStateChanged = (callback: any) => {
 	return onAuthStateChanged(auth, callback);
 }
 

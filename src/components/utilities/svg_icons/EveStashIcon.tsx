@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types'
+import { EveIconProps } from "./EyeIcon"
 
-const EveStashIcon = ({ className, size }) => {
+const EveStashIcon: React.FC<EveIconProps> = ({ className, size }) => {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width={size} height={size}>
 			<path
@@ -11,8 +11,3 @@ const EveStashIcon = ({ className, size }) => {
 }
 
 export default EveStashIcon
-
-EveStashIcon.propTypes = {
-	className: PropTypes.string,
-	size: PropTypes.string,
-}

@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import ThemeToggle from '../components/ThemeToggle'
-
 import Navbar from '../components/Navbar'
-
 import Transition from '../components/Transition'
 
 import { useSelector } from 'react-redux'
+
+import { StoreUserProfileInterface } from '../types/user.interface'
 
 const Auth = () => {
 
@@ -15,7 +15,7 @@ const Auth = () => {
 	const location = useLocation()
 	const [reload, setReload] = useState(false)
 
-	const currentUser = useSelector(state => state.user.currentUser)
+	const { currentUser } = useSelector((state: { user: StoreUserProfileInterface }) => state.user)
 
 	useEffect(() => {
 		if (currentUser) {

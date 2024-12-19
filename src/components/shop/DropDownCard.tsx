@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 
-import PropTypes from 'prop-types';
+import { CartInterface } from '../../types/shop.interface'
 
-const DropDownCard = ({ item }) => {
+interface DropDownCardProps {
+	item: CartInterface
+}
+
+const DropDownCard: React.FC<DropDownCardProps> = ({ item }) => {
 	const [isLoading, setIsLoading] = useState(true);
 
 	const handleImageLoad = () => {
@@ -36,7 +40,3 @@ const DropDownCard = ({ item }) => {
 
 
 export default DropDownCard
-
-DropDownCard.propTypes = {
-	item: PropTypes.object.isRequired,
-};

@@ -3,11 +3,14 @@ import {
 	getDocs, 
 	getDoc,
 	doc,
-	setDoc 
+	setDoc,
 } from "firebase/firestore";
 import { db } from "./filrebase.utils";
 
-const fetchAllProducts = async () => {
+import { CartInterface, ProductInterface } from './../../types/shop.interface';
+import { User } from "firebase/auth";
+
+const fetchAllProducts = async (): Promise<ProductInterface[]> => {
 	try {
 		const productsCollectionRef = collection(db, "products");
 		const querySnapshot = await getDocs(productsCollectionRef);
@@ -22,7 +25,7 @@ const fetchAllProducts = async () => {
 };
 
 
-const updateUserCart = async (user, cart) => {
+const updateUserCart = async (user: User, cart: CartInterface[]) => {
 	if (cart === undefined) {
 		return;
 	}
@@ -34,10 +37,20 @@ const updateUserCart = async (user, cart) => {
 	}
 }
 
-const fecthUserCart = async (user) => {
+const fecthUserCart = async<T extends User>(user: User):  Promise<CartInterface[]> => {
 	const userRef = doc(db, "users", user.uid);
-	const snapShot = await getDoc(userRef);
-	return snapShot.data().cart;
+	try{
+		const snapShot = await getDoc(userRef);
+		const data = snapShot.data();
+		if (data) {
+			return data.cart;
+		} else {
+			return [];
+		}
+	} catch (error) {
+		console.error("Error fetching user cart: ", error);
+		return [];
+	}
 }
 
 

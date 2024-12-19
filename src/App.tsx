@@ -25,8 +25,8 @@ import './App.css'
 import { AnimatePresence } from "motion/react";
 import { NotificationContext } from "./context/NotificationContext";
 
-
 import { UserProfileInterface } from "./types/user.interface";
+import { UserCredential } from "firebase/auth";
 
 
 const BrowserRouter = createBrowserRouter([
@@ -76,12 +76,18 @@ function App() {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		const unsubscribe = AuthStateChanged((user : UserProfileInterface) => {
+		const unsubscribe = AuthStateChanged((user : UserCredential['user']) => {
 			if (user) {
-				const userProfile = createUserProfileDocumentOrGetProfile(user)
+				const userProfileData = 
+					{ displayName: user.displayName, email: user.email } as UserProfileInterface
+				
+				debugger
+				console.log(userProfileData)
+				const userProfile = createUserProfileDocumentOrGetProfile(user, userProfileData)
+
 				Promise.all([userProfile]).then((data) => {
 					const userProfileData = data[0]
-					const pickedUserData = (user : UserProfileInterface) => {
+					const pickedUserData = (user : UserCredential['user']) => {
 						return {
 							uid: user.uid,
 							displayName: user.displayName,
@@ -99,10 +105,10 @@ function App() {
 						status: 'error'
 					})
 				})
-				dispatch(setInitialCart(user))
+				dispatch(setInitialCart(user) as any)
 			}
 		})
-		dispatch(setInitialProductsAsync())
+		dispatch(setInitialProductsAsync() as any)
 		return () => unsubscribe()
 	},[dispatch])
 
