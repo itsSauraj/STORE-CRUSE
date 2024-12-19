@@ -112,7 +112,7 @@ const Navbar = () => {
 					{currentUser && (
 						<BagIcon
 							onClickHandler={toggleDropdown as any}
-							ref = {(el : HTMLElement) => (cartIconRef.current[1] = el)}	
+							ref={(el : HTMLElement) => (cartIconRef.current[1] = el)}	
 							width={25} 
 							height={25}
 							strokeColor='stroke-primary dark:stroke-secondary'

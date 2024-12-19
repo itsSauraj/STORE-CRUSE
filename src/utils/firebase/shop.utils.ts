@@ -19,8 +19,8 @@ const fetchAllProducts = async (): Promise<ProductInterface[]> => {
 			id: doc.id,
 			...doc.data()
 		}));
-		return products;
-	} catch (error) {
+		return products as ProductInterface[];
+	} catch (error: any) {
 		return error;
 	}
 };

@@ -27,8 +27,6 @@ import {
 } from "firebase/firestore";
 import { UserProfileInterface } from "../../types/user.interface";
 
-
-
 type FirebaseConfig = {
 	apiKey: string,
 	authDomain: string,
