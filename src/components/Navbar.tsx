@@ -19,7 +19,7 @@ import DropDownCart from './shop/DropDownCart'
 
 import { BagIcon } from '../assets/svg'
 
-import { StoreUserProfileInterface } from '../types/user.interface'
+import { RootState } from '../redux/rootReducer'
 
 const navLinks = [
 	{
@@ -31,7 +31,7 @@ const navLinks = [
 const Navbar = () => {
 
 	const dispatch = useDispatch()
-	const { currentUser } = useSelector((state : {user: StoreUserProfileInterface}) => state.user)
+	const { currentUser } = useSelector((state : RootState) => state.user)
 
 	const { setNotification } = useContext(NotificationContext)
 

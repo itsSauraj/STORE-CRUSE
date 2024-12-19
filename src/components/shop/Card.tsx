@@ -12,7 +12,8 @@ import { ProductInterface } from '../../types/shop.interface';
 
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { StoreUserProfileInterface } from '../../types/user.interface';
+
+import { RootState } from '../../redux/rootReducer';
 
 interface CardProps {
 	item: ProductInterface
@@ -21,7 +22,7 @@ interface CardProps {
 const Card : React.FC<CardProps> = ({ item }) => {
 
 	const navigate = useNavigate();
-	const { currentUser } = useSelector((state: { user: StoreUserProfileInterface }) => state.user);
+	const { currentUser } = useSelector((state: RootState) => state.user);
 	const [isLoading, setIsLoading] = useState(true);
 
 	const { setNotification } = useContext(NotificationContext);

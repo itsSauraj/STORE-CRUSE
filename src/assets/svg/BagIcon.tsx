@@ -2,7 +2,7 @@ import React, { ChangeEvent, forwardRef, LegacyRef, MouseEventHandler } from "re
 
 import { useSelector } from "react-redux";
 
-import { ShopState } from "../../types/shop.interface";
+import { RootState } from "../../redux/rootReducer";
 
 interface BagIconProps {
 	width?: number;
@@ -20,7 +20,7 @@ const BagIcon: React.FC<BagIconProps> = forwardRef(({
 	textColor="fill-primary dark:fill-secondary" , count=0, onClickHandler }, 
 	ref: React.LegacyRef<SVGSVGElement>) => {
 	
-	const { cart } = useSelector((state : { shop: ShopState }) => state.shop);
+	const { cart } = useSelector((state : RootState) => state.shop);
 	if (cart.length > 0) {
 		count = cart.reduce((acc, item) => acc + item.quantity, 0);
 	}

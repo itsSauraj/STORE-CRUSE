@@ -3,10 +3,12 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleThemeAction } from '../redux/slices/app.slice';
 
+import { RootState } from '../redux/rootReducer';
+
 const ThemeToggle: React.FC = () => {
 	
 	const dispatch = useDispatch();
-	const { theme } = useSelector((state: { app: { theme: string } }) => state.app);
+	const { theme } = useSelector((state: RootState ) => state.app);
 
 	const toggleTheme = () => {
 		dispatch(toggleThemeAction() as any);

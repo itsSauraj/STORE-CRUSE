@@ -10,8 +10,7 @@ import errorProductsImg from '../../assets/images/error-loading.png';
 import loadingImg from '../../assets/gifs/loading.gif';
 
 import { useSelector } from 'react-redux';
-
-import { ShopState } from '../../types/shop.interface';
+import { RootState } from '../../redux/rootReducer';
 
 interface DropDownCartProps {
 	isOpen: boolean;
@@ -21,7 +20,7 @@ interface DropDownCartProps {
 const DropDownCart: React.FC<DropDownCartProps> = ({ isOpen, setIsOpen }) => {
 
 	const dropdownRef: LegacyRef<HTMLDivElement> = useRef(null);
-	const { cart, isCartLoading, errorLoadingCart } = useSelector((state: { shop: ShopState }) => state.shop)
+	const { cart, isCartLoading, errorLoadingCart } = useSelector((state: RootState) => state.shop)
 
 	const handleClickOutside: any = (event: ChangeEvent<HTMLElement>) => {
 		if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

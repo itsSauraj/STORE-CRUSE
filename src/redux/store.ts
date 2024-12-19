@@ -4,9 +4,6 @@ import storage from "redux-persist/lib/storage";
 
 import { rootReducer } from "./rootReducer";
 
-const environment: String = import.meta.env.VITE_APP_ENV;
-const inProduction: boolean = environment === 'production' ? true : false;
-
 const persistConfig = {
 	key: 'root',
 	storage: storage,

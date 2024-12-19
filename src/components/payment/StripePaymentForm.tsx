@@ -10,8 +10,7 @@ import PaperButton from '../utilities/PaperButton'
 import { useSelector, useDispatch } from 'react-redux';
 
 import { clearCart } from '../../redux/slices/shop.slice';
-
-import { StoreUserProfileInterface } from '../../types/user.interface';
+import { RootState } from '../../redux/rootReducer';
 
 interface StripePaymentFormProps {
 	amount: number
@@ -31,7 +30,7 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({ amount }) => {
 	const [paymentIsLoading, setPaymentIsLoading] = useState(false)
 	
 	const { setNotification } = useContext(NotificationContext)
-	const { currentUser } = useSelector((state : { user: StoreUserProfileInterface }) => state.user)
+	const { currentUser } = useSelector((state : RootState) => state.user)
 
 	amount = amount * 100;
 

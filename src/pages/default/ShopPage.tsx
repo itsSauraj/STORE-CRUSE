@@ -8,6 +8,8 @@ import errorProductsImg from "../../assets/images/error-loading.png";
 import noProductsImg from "../../assets/images/no-products.png";
 import loadingImg from "../../assets/gifs/loading.gif";
 
+import { RootState } from "../../redux/rootReducer";
+
 const filters = [
 	"mens",
 	"womens",
@@ -19,11 +21,9 @@ const filters = [
 	"kurti",	
 ];
 
-import { ShopState } from "../../types/shop.interface";
-
 const ShopPage = () => {
 
-	const { products, isProductLoading, errorLoadingProducts } = useSelector((state : { shop: ShopState }) => state.shop)
+	const { products, isProductLoading, errorLoadingProducts } = useSelector((state : RootState) => state.shop)
 	const [filteredData, setFilteredData] = useState(products);
 
 	return (

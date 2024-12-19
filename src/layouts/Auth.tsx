@@ -7,7 +7,7 @@ import Transition from '../components/Transition'
 
 import { useSelector } from 'react-redux'
 
-import { StoreUserProfileInterface } from '../types/user.interface'
+import { RootState } from '../redux/rootReducer'
 
 const Auth = () => {
 
@@ -15,7 +15,7 @@ const Auth = () => {
 	const location = useLocation()
 	const [reload, setReload] = useState(false)
 
-	const { currentUser } = useSelector((state: { user: StoreUserProfileInterface }) => state.user)
+	const { currentUser } = useSelector((state: RootState) => state.user)
 
 	useEffect(() => {
 		if (currentUser) {
