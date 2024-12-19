@@ -80,8 +80,6 @@ function App() {
 			if (user) {
 				const userProfileData = 
 					{ displayName: user.displayName, email: user.email } as UserProfileInterface
-				
-				debugger
 				console.log(userProfileData)
 				const userProfile = createUserProfileDocumentOrGetProfile(user, userProfileData)
 
