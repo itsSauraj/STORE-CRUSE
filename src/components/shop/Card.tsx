@@ -10,11 +10,18 @@ import { addProductToCart } from '../../redux/slices/shop.slice';
 
 import { ProductInterface } from '../../types/shop.interface';
 
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { StoreUserProfileInterface } from '../../types/user.interface';
+
 interface CardProps {
 	item: ProductInterface
 }
 
 const Card : React.FC<CardProps> = ({ item }) => {
+
+	const navigate = useNavigate();
+	const { currentUser } = useSelector((state: { user: StoreUserProfileInterface }) => state.user);
 	const [isLoading, setIsLoading] = useState(true);
 
 	const { setNotification } = useContext(NotificationContext);
@@ -26,6 +33,14 @@ const Card : React.FC<CardProps> = ({ item }) => {
 	const dispatch = useDispatch();
 
 	const handleAddToCart = () => {
+		if (!currentUser) {
+			setNotification({
+				message: 'Please login to add items to cart',
+				status: 'info',
+			});
+			navigate('/auth/login');
+			return;
+		}
 		dispatch(addProductToCart(item) as any);
 		setNotification({
 			message: 'Item added to cart',
