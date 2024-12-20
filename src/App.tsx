@@ -1,3 +1,4 @@
+import React from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { useEffect, useContext } from "react"
@@ -8,17 +9,21 @@ import { setUser } from "./redux/slices/user.slice";
 import { setInitialCart, setInitialProductsAsync } from "./redux/slices/shop.slice";
 
 // Importing Layout Components
-import Default from './layouts/Default'
-import Auth from './layouts/Auth'
+const Default = React.lazy(() => import('./layouts/Default'));
+const Auth = React.lazy(() => import('./layouts/Auth'));
 
 // Importing Pages
-import HomePage from './pages/default/HomePage'
-import ShopPage from './pages/default/ShopPage'
-import Checkout from "./pages/default/Checkout";
+const HomePage = React.lazy(() => import('./pages/default/HomePage'));
+const ShopPage = React.lazy(() => import('./pages/default/ShopPage'));
+const Checkout = React.lazy(() => import('./pages/default/Checkout'));
 
-import LoginPage from './pages/auth/LoginPage'
-import SignUpPage from './pages/auth/SignUpPage'
-import PasswordResetPage from './pages/auth/PasswordResetPage'
+const LoginPage = React.lazy(() => import('./pages/auth/LoginPage'));
+const SignUpPage = React.lazy(() => import('./pages/auth/SignUpPage'));
+const PasswordResetPage = React.lazy(() => import('./pages/auth/PasswordResetPage'));
+
+import { BrandIcon } from "./assets/svg";
+
+import { motion } from "framer-motion";
 
 // Importing CSS
 import './App.css'
@@ -28,41 +33,67 @@ import { NotificationContext } from "./context/NotificationContext";
 import { UserProfileInterface } from "./types/user.interface";
 import { UserCredential } from "firebase/auth";
 
+import { Suspense } from 'react';
+
+const Loading = () => (
+	<AnimatePresence>
+		<motion.div
+			initial={{ scale: 1 }}
+			animate={{ scale: [1, 1.1, 1] }}
+			transition={{ duration: 1, repeat: Infinity }}
+			className='flex justify-center items-center h-screen w-screen'
+		>
+			<BrandIcon 
+				width={80}
+				height={80}
+				bgFill='fill-primary dark:fill-secondary' 
+				fgFill='fill-secondary dark:fill-primary' 
+			/>
+		</motion.div>
+	</AnimatePresence>
+
+);
+
+const WithSuspense = ({ children }: { children: React.ReactNode }) => (
+	<Suspense fallback={<Loading />}>
+		{children}
+	</Suspense>
+);
 
 const BrowserRouter = createBrowserRouter([
 	{
 		path: "/",
-		element: <Default />,
+		element: <WithSuspense children={<Default/>} />,
 		children: [
 			{
 				path: "",
-				element: <HomePage />,
+				element: <WithSuspense children={<HomePage />} />,
 			},
 			{
 				path: "shop",
-				element: <ShopPage />,
+				element: <WithSuspense children={<ShopPage />} />,
 			},
 			{
 				path: "checkout",
-				element: <Checkout />,
+				element: <WithSuspense children={<Checkout />} />,
 			},
 		]
 	},
 	{
 		path: "auth",
-		element: <Auth />,
+		element: <WithSuspense children={<Auth />}/>,
 		children: [
 			{
 				path: "login",
-				element: <LoginPage />,
+				element: <WithSuspense children={<LoginPage />} />,
 			},
 			{
 				path: "signup",
-				element: <SignUpPage />,
+				element: <WithSuspense children={<SignUpPage />} />,
 			},
 			{
 				path: "password-reset",
-				element: <PasswordResetPage />,
+				element: <WithSuspense children={<PasswordResetPage />} />,
 			}
 		]
 	}

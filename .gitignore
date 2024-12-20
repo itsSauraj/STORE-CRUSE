@@ -22,8 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.env
 .env.development
+.env.production
 
 # Local Netlify folder
 .netlify
-dev-dist
+dev-dist/
+
+test

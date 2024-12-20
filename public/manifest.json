@@ -28,6 +28,7 @@
     ],
     "theme_color": "#2e2d2c",
     "background_color": "#DAD1C4",
+    "display_override": ["fullscreen", "minimal-ui"],
     "display": "standalone",
     "scope": "/",
     "start_url": "/",

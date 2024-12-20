@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import ThemeToggle from '../components/ThemeToggle'
-import Navbar from '../components/Navbar'
+const Navbar = React.lazy(() => import('../components/Navbar'))
 import Transition from '../components/Transition'
 
 import { useSelector } from 'react-redux'

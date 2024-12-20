@@ -2,6 +2,9 @@ import { useState, useEffect, useContext, useRef, EventHandler, RefObject, Mouse
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { BrandIcon } from '../assets/svg'
+import { BagIcon } from '../assets/svg'
+
+import DropDownCart from './shop/DropDownCart'
 
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai'
 
@@ -15,9 +18,6 @@ import { logoutUser } from '../redux/slices/user.slice'
 
 import { useSelector, useDispatch } from 'react-redux'
 
-import DropDownCart from './shop/DropDownCart'
-
-import { BagIcon } from '../assets/svg'
 
 import { RootState } from '../redux/rootReducer'
 
