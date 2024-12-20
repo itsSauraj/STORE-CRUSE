@@ -35,5 +35,13 @@ export default [
 			],
 			indent: ["error", 'tab'],
 		},
+		overrides: [
+			{
+			"files": ["tests/**/*"],
+			"env": {
+				"jest": true
+			}
+			}
+		],
 	},
 ];
