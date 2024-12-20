@@ -3,19 +3,40 @@
     "short_name": "Cruse",
     "icons": [
         {
+            "src": "favicon.ico",
+            "sizes": "64x64 32x32 24x24 16x16",
+            "type": "image/x-icon"
+        },
+        {
             "src": "/web-app-manifest-192x192.png",
             "sizes": "192x192",
             "type": "image/png",
-            "purpose": "maskable"
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/favicon-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/web-app-manifest-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
-            "purpose": "maskable"
+            "purpose": "any maskable"
         }
     ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone"
+    "theme_color": "#2e2d2c",
+    "background_color": "#DAD1C4",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/",
+    "screenshots": [
+        {
+            "src": "/screenshots/1.png",
+            "sizes": "640x1414",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ]
 }
